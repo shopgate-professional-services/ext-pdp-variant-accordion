@@ -1,0 +1,77 @@
+{
+  "version": "1.0.0-beta.1",
+  "id": "@shopgate-project/ext-pdp-variant-accordion",
+  "components": [
+    {
+      "id": "VariantSelect",
+      "path": "frontend/portals/VariantSelect/index.jsx",
+      "target": "product.variant-select",
+      "type": "portals"
+    }
+  ],
+  "configuration": {
+    "horizontalInsets": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": null,
+      "params": {
+        "type": "number",
+        "label": "Horizontal insets for the characteristics in pixels (e.g. 16)"
+      }
+    },
+    "bottomInset": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": null,
+      "params": {
+        "type": "number",
+        "label": "Trailing inset for the characteristics block in pixels (e.g. 16)"
+      }
+    },
+    "animateAccordion": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": false,
+      "params": {
+        "type": "checkbox",
+        "label": "Wether the characteristics accordions are supposed to be animated"
+      }
+    },
+    "characteristicBorderColor": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": null,
+      "params": {
+        "type": "number",
+        "label": "Border color of a characteristic section"
+      }
+    },
+    "characteristicValueBorderColor": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": null,
+      "params": {
+        "type": "number",
+        "label": "Border color of a characteristic value"
+      }
+    },
+    "characteristicValueBorderColorSelected": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": null,
+      "params": {
+        "type": "number",
+        "label": "Border color of a selected characteristic value"
+      }
+    },
+    "showTrailingBorder": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": true,
+      "params": {
+        "type": "checkbox",
+        "label": "Wether the last characteristic has a border at the bottom"
+      }
+    }
+  }
+}
