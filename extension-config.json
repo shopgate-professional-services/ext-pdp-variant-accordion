@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0-beta.2",
+  "version": "1.0.0-beta.3",
   "id": "@shopgate-project/ext-pdp-variant-accordion",
   "components": [
     {
@@ -28,13 +28,13 @@
         "label": "Trailing inset for the characteristics block in pixels (e.g. 16)"
       }
     },
-    "animateAccordion": {
+    "animate": {
       "type": "admin",
       "destination": "frontend",
       "default": false,
       "params": {
         "type": "checkbox",
-        "label": "Wether the characteristics accordions are supposed to be animated"
+        "label": "Wether the characteristics accordions are animated"
       }
     },
     "characteristicBorderColor": {

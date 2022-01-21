@@ -9,17 +9,17 @@ const { colors } = themeConfig;
 
 const {
   horizontalInsets,
-  animateAccordion,
+  animate,
 } = config;
 
 const insets = horizontalInsets || 0;
 
 const scrollOffset = 16;
-const animationDuration = animateAccordion ? 250 : 0;
+const animationDuration = animate ? 250 : 0;
 
 const styles = {
   root: css({
-    ...(animateAccordion ? {
+    ...(animate ? {
       transition: `max-height ${animationDuration}ms cubic-bezier(0, 1, 0, 1)`,
     } : null),
     maxHeight: 0,
@@ -28,7 +28,7 @@ const styles = {
   }).toString(),
   open: css({
     maxHeight: '100vh !important',
-    ...(animateAccordion ? {
+    ...(animate ? {
       transition: `max-height ${animationDuration * 2}ms ease-in-out !important`,
     } : null),
   }).toString(),
