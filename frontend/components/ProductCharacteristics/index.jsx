@@ -14,7 +14,7 @@ const { bottomInset = 0 } = config;
 
 const styles = {
   root: css({
-    paddingBottom: bottomInset,
+    marginBottom: bottomInset,
     ':empty': {
       display: 'none',
     },
