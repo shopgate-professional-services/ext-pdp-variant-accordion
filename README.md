@@ -1,0 +1,1 @@
+# ext-pdp-variant-accordion
