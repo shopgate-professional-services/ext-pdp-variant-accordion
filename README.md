@@ -9,7 +9,7 @@ This extension will replace the default variant selection on PDP with an accordi
 - `bottomInset` (number) Trailing inset for the characteristics block in pixels (e.g. 16)
 - `animateAccordion` (boolean) Wether the characteristics accordions are supposed to be animated (_default_ `false`)
 - `characteristicBorderColor` (string) Border color of a characteristic section (e.g. `#57606a`)
-- `showTrailingBorder` (boolean) Wether the last characteristic has a border at the bottom (_default_ `true`)
+- `showBottomBorder` (boolean) Wether the last characteristic has a border at the bottom (_default_ `true`)
 - `characteristicValueBorderColor`(string) Border color of a characteristic value (e.g. `#57606a`)
 - `characteristicValueBorderColorSelected` (string) Border color of a selected characteristic value (e.g.`#0969da`)
 

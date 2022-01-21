@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-beta.2",
   "id": "@shopgate-project/ext-pdp-variant-accordion",
   "components": [
     {
@@ -64,7 +64,7 @@
         "label": "Border color of a selected characteristic value"
       }
     },
-    "showTrailingBorder": {
+    "showBottomBorder": {
       "type": "admin",
       "destination": "frontend",
       "default": true,
