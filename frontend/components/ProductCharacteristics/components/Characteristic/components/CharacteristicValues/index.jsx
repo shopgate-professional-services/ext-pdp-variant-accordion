@@ -71,7 +71,13 @@ const styles = {
  * @param {Object} props The component props
  * @returns {JSX}
  */
-const CharacteristicValues = ({ values, onClick, open }) => {
+const CharacteristicValues = ({
+  values,
+  onClick,
+  open,
+  characteristicId,
+  characteristicLabel,
+}) => {
   const containerRef = useRef(null);
 
   useEffect(() => {
@@ -92,15 +98,12 @@ const CharacteristicValues = ({ values, onClick, open }) => {
       <div className={styles.container} ref={containerRef}>
         <div className={classNames(styles.terminator)}>&nbsp;</div>
         <div className={styles.valuesContainer}>
-          { values.map(({
-            id, label, selected, selectable,
-          }) => (
+          { values.map((value) => (
             <CharacteristicValue
-              key={id}
-              id={id}
-              label={label}
-              selected={selected}
-              disabled={!selectable}
+              key={value.id}
+              characteristicId={characteristicId}
+              characteristicLabel={characteristicLabel}
+              value={value}
               onClick={onClick}
               className={styles.value}
             />
@@ -115,6 +118,8 @@ const CharacteristicValues = ({ values, onClick, open }) => {
 CharacteristicValues.propTypes = {
   onClick: PropTypes.func.isRequired,
   values: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  characteristicId: PropTypes.string.isRequired,
+  characteristicLabel: PropTypes.string.isRequired,
   open: PropTypes.bool,
 };
 

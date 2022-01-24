@@ -157,13 +157,23 @@ const Characteristic = ({
               </div>
               <div className={styles.value}>
                 { selectedValue ? (
-                  <CharacteristicValue label={selectedValue.label} />
+                  <CharacteristicValue
+                    characteristicId={id}
+                    characteristicLabel={label}
+                    value={selectedValue}
+                  />
                 ) : (
                   <I18n.Text string="product.pick_an_attribute" params={[label]} />
                 )}
               </div>
             </div>
-            <CharacteristicValues values={values} open={isOpen} onClick={handleValueClick} />
+            <CharacteristicValues
+              characteristicId={id}
+              characteristicLabel={label}
+              values={values}
+              open={isOpen}
+              onClick={handleValueClick}
+            />
           </div>
         </div>
       )}

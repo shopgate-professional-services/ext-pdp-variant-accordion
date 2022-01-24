@@ -52,10 +52,19 @@ const ProductCharacteristicsProvider = ({
     setCharacteristicStates(update);
   }, [characteristicStates]);
 
+  /**
+   * Determines a swatch color that's displayed instead of a characteristic value label
+   * @returns {string|null}
+   */
+  const getSwatchColor = useCallback((characteristic, value) => {
+    return null;
+  }, []);
+
   const value = useMemo(() => ({
     allowMultipleOpen,
     characteristicStates: characteristicStates || [],
     setOpenState,
+    getSwatchColor,
   }), [characteristicStates, setOpenState]);
 
   return (
