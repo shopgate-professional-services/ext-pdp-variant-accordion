@@ -6,7 +6,7 @@ import { colorCharacteristic, propertyWithColor } from '../config';
 export const getColorCharacteristic = createSelector(
   getProductVariants,
   (variants) => {
-    if (!variants) {
+    if (!variants || !Array.isArray(colorCharacteristic) || !propertyWithColor) {
       return null;
     }
 
