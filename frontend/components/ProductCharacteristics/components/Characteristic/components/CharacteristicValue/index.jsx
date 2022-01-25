@@ -16,7 +16,7 @@ const {
 } = config;
 
 const borderColor = characteristicValueBorderColor || '#DCDCDC';
-const borderColorSelected = characteristicValueBorderColorSelected || colors.primary;
+const borderColorSelected = characteristicValueBorderColorSelected || colors.accent;
 
 const styles = {
   root: css({

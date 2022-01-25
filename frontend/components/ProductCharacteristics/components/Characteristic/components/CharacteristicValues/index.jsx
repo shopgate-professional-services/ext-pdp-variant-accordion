@@ -51,7 +51,7 @@ const styles = {
     margin: '0 6px',
   }).toString(),
   terminator: css({
-    background: colors.primary,
+    background: colors.accent,
     borderTopRightRadius: 8,
     borderBottomRightRadius: 8,
     borderTopLeftRadius: 4,
