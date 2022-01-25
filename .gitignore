@@ -60,6 +60,8 @@ typings/
 # IDE
 .idea/
 .vscode/
+.DS_Store
+
 
 package-lock.json
 frontend/config.json

@@ -15,6 +15,7 @@ const allowMultipleOpen = false;
  */
 const ProductCharacteristicsProvider = ({
   characteristics,
+  colorCharacteristic,
   children,
 }) => {
   const [characteristicStates, setCharacteristicStates] = useState(null);
@@ -57,15 +58,25 @@ const ProductCharacteristicsProvider = ({
    * @returns {string|null}
    */
   const getSwatchColor = useCallback((characteristic, value) => {
-    return null;
-  }, []);
+    if (!colorCharacteristic || characteristic.id !== colorCharacteristic.id) {
+      return null;
+    }
+
+    const { color } = colorCharacteristic.values.find(({ id }) => id === value.id) || {};
+
+    if (!color) {
+      return null;
+    }
+
+    return color;
+  }, [colorCharacteristic]);
 
   const value = useMemo(() => ({
     allowMultipleOpen,
     characteristicStates: characteristicStates || [],
     setOpenState,
     getSwatchColor,
-  }), [characteristicStates, setOpenState]);
+  }), [characteristicStates, getSwatchColor, setOpenState]);
 
   return (
     <Context.Provider value={value}>
@@ -77,9 +88,11 @@ const ProductCharacteristicsProvider = ({
 ProductCharacteristicsProvider.propTypes = {
   characteristics: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   children: PropTypes.node,
+  colorCharacteristic: PropTypes.shape(),
 };
 
 ProductCharacteristicsProvider.defaultProps = {
+  colorCharacteristic: null,
   children: null,
 };
 

@@ -1,6 +1,6 @@
 # Shopgate Connect - Extension pdp-variant-accordion
 
-This extension will replace the default variant selection on PDP with an accordion style version.
+This extension will replace the default variant selection on PDP with an accordion style version. It also supports color swatches via additional product properties, provided by [@shopgate-project/products-properties](https://github.com/shopgate-professional-services/ext-products-properties)
 
 ![](assets/01.png)
 
@@ -12,6 +12,8 @@ This extension will replace the default variant selection on PDP with an accordi
 - `showBottomBorder` (boolean) Wether the last characteristic has a border at the bottom (_default_ `true`)
 - `characteristicValueBorderColor`(string) Border color of a characteristic value (e.g. `#57606a`)
 - `characteristicValueBorderColorSelected` (string) Border color of a selected characteristic value (e.g.`#0969da`)
+- `propertyWithColor` (string) An (additional) product property which contains a css color for a swatch.
+- `colorCharacteristic` (Array) A list of characteristic labels which are supposed to be displayed as swatches.
 
 ## Classes
 

@@ -1,4 +1,6 @@
-import React, { Fragment, memo, useMemo, useCallback } from 'react';
+import React, {
+  Fragment, memo, useMemo, useCallback,
+} from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { css } from 'glamor';
@@ -13,13 +15,8 @@ const {
   characteristicValueBorderColorSelected,
 } = config;
 
-const borderColor =  characteristicValueBorderColor ||'#DCDCDC';
+const borderColor = characteristicValueBorderColor || '#DCDCDC';
 const borderColorSelected = characteristicValueBorderColorSelected || colors.primary;
-
-const swatch = css({
-  width: 50,
-  borderRadius: 2,
-}).toString();
 
 const styles = {
   root: css({
@@ -27,6 +24,8 @@ const styles = {
     borderRadius: 4,
     padding: 8,
     display: 'flex',
+    minWidth: 70,
+    justifyContent: 'center',
   }).toString(),
   selected: css({
     borderColor: `${borderColorSelected} !important`,
@@ -36,12 +35,12 @@ const styles = {
     color: colors.shade4,
     cursor: 'default',
     ' > span': {
-      opacity: 0.4
-    }
+      opacity: 0.4,
+    },
   }).toString(),
   swatch: css({
-    width: 50,
-    borderRadius: 2,
+    width: '100%',
+    borderRadius: 3,
   }).toString(),
 };
 
@@ -52,31 +51,33 @@ const styles = {
  * @returns {JSX}
  */
 const CharacteristicValue = ({
-  value, className, onClick, characteristicId, characteristicLabel
+  value, className, onClick, characteristicId, characteristicLabel,
 }) => {
-  const { id, label, selected, selectable } = value;
+  const {
+    id, label, selected, selectable,
+  } = value;
 
   const { getSwatchColor } = useProductCharacteristics();
 
+  const clickable = useMemo(() => typeof onClick === 'function', [onClick]);
+
   // Determine if the value needs to be displayed as a swatch
-  const swatchColor = useMemo(() => {
-    return getSwatchColor({
-      id: characteristicId,
-      label: characteristicLabel
-    }, value);
-  }, [label]);
+  const swatchColor = useMemo(() => getSwatchColor({
+    id: characteristicId,
+    label: characteristicLabel,
+  }, value), [value, characteristicId, characteristicLabel, getSwatchColor]);
 
   const classes = useMemo(() => classNames(
     styles.root,
     className,
     'pdp-variant-accordion__characteristic__value',
     {
-      [styles.selected]: selected,
+      [styles.selected]: clickable && selected,
       [styles.disabled]: !selectable,
-      selected,
+      selected: clickable && selected,
       disabled: !selectable,
     }
-  ), [className, selectable, selected]);
+  ), [className, selectable, selected, clickable]);
 
   const handleClick = useCallback(() => {
     if (selectable && onClick) {
@@ -95,7 +96,7 @@ const CharacteristicValue = ({
   return (
     <Component className={classes}>
       { swatchColor ? (
-        <span className={styles.swatch} style={{background: swatchColor}}>&nbsp;</span>
+        <span className={styles.swatch} style={{ background: swatchColor }}>&nbsp;</span>
       ) : (
         <Fragment>
           {label}
@@ -106,9 +107,9 @@ const CharacteristicValue = ({
 };
 
 CharacteristicValue.propTypes = {
-  value: PropTypes.shape().isRequired,
   characteristicId: PropTypes.string.isRequired,
   characteristicLabel: PropTypes.string.isRequired,
+  value: PropTypes.shape().isRequired,
   className: PropTypes.string,
   onClick: PropTypes.func,
 };

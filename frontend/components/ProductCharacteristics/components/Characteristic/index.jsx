@@ -37,7 +37,7 @@ const styles = {
     borderTopColor: borderColor,
     display: 'flex',
     flexDirection: 'column',
-    padding: '8px 0'
+    padding: '8px 0',
   }).toString(),
   containerLast: css({
     ...(showTrailingBorder ? {

@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0-beta.4",
+  "version": "1.0.0-beta.5",
   "id": "@shopgate-project/ext-pdp-variant-accordion",
   "components": [
     {
@@ -71,6 +71,26 @@
       "params": {
         "type": "checkbox",
         "label": "Wether the last characteristic has a border at the bottom"
+      }
+    },
+    "propertyWithColor": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": "",
+      "params": {
+        "label": "Name of the child product property which contains color hexcode",
+        "type": "text",
+        "required": true
+      }
+    },
+    "colorCharacteristic": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": null,
+      "params": {
+        "label": "Characteristic names which are used as color swatch (e.g.['Color', 'Shoe Color', 'Farbe']",
+        "type": "json",
+        "required": true
       }
     }
   }

@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import { themeConfig } from '@shopgate/pwa-common/helpers/config';
 import CharacteristicValue from '../CharacteristicValue';
 import config from '../../../../../../config';
+
 const { colors } = themeConfig;
 
 const {
@@ -98,7 +99,7 @@ const CharacteristicValues = ({
       <div className={styles.container} ref={containerRef}>
         <div className={classNames(styles.terminator)}>&nbsp;</div>
         <div className={styles.valuesContainer}>
-          { values.map((value) => (
+          { values.map(value => (
             <CharacteristicValue
               key={value.id}
               characteristicId={characteristicId}
@@ -116,10 +117,10 @@ const CharacteristicValues = ({
 };
 
 CharacteristicValues.propTypes = {
-  onClick: PropTypes.func.isRequired,
-  values: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   characteristicId: PropTypes.string.isRequired,
   characteristicLabel: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
+  values: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   open: PropTypes.bool,
 };
 
