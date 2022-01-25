@@ -30,8 +30,8 @@ export const getColorCharacteristic = createSelector(
         property = additionalProperties.find(p => p.label === propertyWithColor);
 
         if (isDev) {
-          const needles = ['Black', 'Blue'];
-          const colors = ['#0056CD', '#D3148E', '#FAED10'];
+          const needles = [];
+          const colors = [];
 
           if (needles.includes(property.value)) {
             property.value = colors[needles.findIndex(entry => entry === property.value)];
