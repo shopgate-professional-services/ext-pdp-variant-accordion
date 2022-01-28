@@ -1,6 +1,6 @@
 {
   "version": "1.0.0-beta.8",
-  "id": "@shopgate-project/ext-pdp-variant-accordion",
+  "id": "@shopgate-project/pdp-variant-accordion",
   "components": [
     {
       "id": "VariantSelect",
