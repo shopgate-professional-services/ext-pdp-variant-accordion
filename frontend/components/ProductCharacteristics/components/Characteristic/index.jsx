@@ -58,11 +58,13 @@ const styles = {
     paddingTop: 8,
     paddingBottom: 8,
     paddingRight: 8,
+    textAlign: 'left',
   }),
   value: css({
     display: 'flex',
     justifyContent: 'flex-end',
     paddingLeft: 4,
+    textAlign: 'right',
   }),
 };
 
