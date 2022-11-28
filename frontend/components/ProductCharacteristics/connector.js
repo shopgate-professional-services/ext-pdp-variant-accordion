@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import isEqual from 'lodash/isEqual';
 import { getProductVariants } from '@shopgate/engage/product';
-import { getColorCharacteristic } from '../../selectors';
+import { getColorCharacteristic, getColorImageCharacteristic } from '../../selectors';
 
 /**
  * Maps the contents of the state to the component props.
@@ -14,6 +14,7 @@ const mapStateToProps = (state, props) => {
   return {
     characteristics: variants ? variants.characteristics : [],
     colorCharacteristic: getColorCharacteristic(state, props),
+    colorImageCharacteristic: getColorImageCharacteristic(state, props),
   };
 };
 

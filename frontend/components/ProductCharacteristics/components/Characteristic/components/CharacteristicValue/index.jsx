@@ -13,6 +13,10 @@ const { colors } = themeConfig;
 const {
   characteristicValueBorderColor,
   characteristicValueBorderColorSelected,
+  showSwatchAsCircle,
+  showLabelBelowSwatch,
+  colorCharacteristic,
+  imageOverlayLabelColor,
 } = config;
 
 const borderColor = characteristicValueBorderColor || '#DCDCDC';
@@ -38,9 +42,34 @@ const styles = {
       opacity: 0.4,
     },
   }).toString(),
+  swatchContainer: css({
+    display: 'block',
+    justifyContent: 'center',
+    textAlign: 'center',
+    minWidth: '80px',
+  }).toString(),
   swatch: css({
     width: '100%',
     borderRadius: 3,
+  }).toString(),
+  swatchAsCircle: css({
+    width: '100%',
+    height: '100%',
+    borderRadius: 50,
+  }).toString(),
+  buttonAsCircle: css({
+    width: '70px',
+    height: '70px',
+    borderRadius: '50px',
+    margin: 'auto',
+  }).toString(),
+  imageOverlayLabel: css({
+    fontSize: '12px',
+    lineHeight: '50px',
+    color: imageOverlayLabelColor || '#fff',
+  }).toString(),
+  labelBelowSwatch: css({
+    marginTop: '4px',
   }).toString(),
 };
 
@@ -57,9 +86,14 @@ const CharacteristicValue = ({
     id, label, selected, selectable,
   } = value;
 
-  const { getSwatchColor } = useProductCharacteristics();
+  const { getSwatchColor, getSwatchImage } = useProductCharacteristics();
 
   const clickable = useMemo(() => typeof onClick === 'function', [onClick]);
+
+  const isColorCharacteristicLabel = useMemo(
+    () => Array.isArray(colorCharacteristic) &&
+    colorCharacteristic.includes(characteristicLabel), [characteristicLabel]
+  );
 
   // Determine if the value needs to be displayed as a swatch
   const swatchColor = useMemo(() => getSwatchColor({
@@ -67,17 +101,24 @@ const CharacteristicValue = ({
     label: characteristicLabel,
   }, value), [value, characteristicId, characteristicLabel, getSwatchColor]);
 
+  // Determine if the value needs to be displayed as a swatch image
+  const swatchImage = useMemo(() => getSwatchImage({
+    id: characteristicId,
+    label: characteristicLabel,
+  }, value), [value, characteristicId, characteristicLabel, getSwatchImage]);
+
   const classes = useMemo(() => classNames(
     styles.root,
     className,
     'pdp-variant-accordion__characteristic__value',
+    showSwatchAsCircle && isColorCharacteristicLabel ? styles.buttonAsCircle : null,
     {
       [styles.selected]: clickable && selected,
       [styles.disabled]: !selectable,
       selected: clickable && selected,
       disabled: !selectable,
     }
-  ), [className, selectable, selected, clickable]);
+  ), [className, selectable, selected, clickable, isColorCharacteristicLabel]);
 
   const handleClick = useCallback(() => {
     if (selectable && onClick) {
@@ -94,15 +135,37 @@ const CharacteristicValue = ({
   }, [selectable, handleClick, onClick]);
 
   return (
-    <Component className={classes}>
-      { swatchColor ? (
-        <span className={styles.swatch} style={{ background: swatchColor }}>&nbsp;</span>
-      ) : (
-        <Fragment>
+    <div className={styles.swatchContainer}>
+      <Component className={classes}>
+        { swatchColor || swatchImage ? (
+          <>
+            <span
+              className={
+                showSwatchAsCircle &&
+                isColorCharacteristicLabel ? styles.swatchAsCircle : styles.swatch
+              }
+              style={{
+                background: swatchColor,
+                backgroundImage: `url(${swatchImage ? swatchImage.imageUrl : ''})`,
+              }}
+            >
+              { swatchImage && swatchImage.imageOverlayLabel ? (
+                <span className={styles.imageOverlayLabel}>{swatchImage ? swatchImage.imageOverlayLabel : ''}</span>
+              ) : null}
+            </span>
+          </>
+        ) : (
+          <Fragment>
+            {label}
+          </Fragment>
+        )}
+      </Component>
+      { showLabelBelowSwatch && isColorCharacteristicLabel ? (
+        <p className={styles.labelBelowSwatch}>
           {label}
-        </Fragment>
-      )}
-    </Component>
+        </p>
+      ) : null}
+    </div>
   );
 };
 
