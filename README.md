@@ -14,6 +14,7 @@ This extension will replace the default variant selection on PDP with an accordi
 - `characteristicValueBorderColorSelected` (string) Border color of a selected characteristic value (e.g.`#0969da`)
 - `propertyWithColor` (string) An (additional) product property which contains a css color for a swatch.
 - `colorCharacteristic` (Array) A list of characteristic labels which are supposed to be displayed as swatches.
+- `showVariantPrices` (boolean) Shows the prices in the variant selection (if product has only one characteristic!)
 
 ## Classes
 

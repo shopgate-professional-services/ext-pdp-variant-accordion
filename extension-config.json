@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "id": "@shopgate-project/pdp-variant-accordion",
   "components": [
     {
@@ -89,6 +89,16 @@
       "default": null,
       "params": {
         "label": "Characteristic names which are used as color swatch (e.g.['Color', 'Shoe Color', 'Farbe']",
+        "type": "json",
+        "required": true
+      }
+    },
+    "showVariantPrices": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": false,
+      "params": {
+        "label": "Shows the prices in the variant selection (if product has only one characteristic!)",
         "type": "json",
         "required": true
       }
