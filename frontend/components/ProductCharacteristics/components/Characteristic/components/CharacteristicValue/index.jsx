@@ -48,7 +48,6 @@ const styles = {
     textAlign: 'center',
   }).toString(),
   priceContainer: css({
-    marginTop: 20,
     display: 'block',
   }).toString(),
   priceStriked: css({
