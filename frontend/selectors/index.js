@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 import { getProductVariants } from '@shopgate/engage/product';
 import { isDev } from '@shopgate/engage/core';
 import { colorCharacteristic, propertyWithColor, useImageAsSwatch } from '../config';
-import { IMAGE_OVERLAY_LABEL, IMAGE_URL_LABEL, SWATCH_IMAGE_PREFIX } from '../constants';
+import { IMAGE_OVERLAY_LABEL, IMAGE_URL, SWATCH_IMAGE_PREFIX } from '../constants';
 
 export const getColorCharacteristic = createSelector(
   getProductVariants,
@@ -91,7 +91,7 @@ export const getColorImageCharacteristic = createSelector(
             const valueParts = v.split('~');
             const propLabel = valueParts[0];
             const propValue = valueParts[1];
-            if (propLabel === IMAGE_URL_LABEL) {
+            if (propLabel === IMAGE_URL) {
               imageUrl = propValue;
             }
             if (propLabel === IMAGE_OVERLAY_LABEL) {
