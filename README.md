@@ -7,13 +7,17 @@ This extension will replace the default variant selection on PDP with an accordi
 ## Config
 - `horizontalInsets` (number) Horizontal insets for the characteristics in pixels (e.g. 16)
 - `bottomInset` (number) Trailing inset for the characteristics block in pixels (e.g. 16)
-- `animate` (boolean) Wether the characteristics accordions are supposed to be animated (_default_ `false`)
+- `animate` (boolean) Whether the characteristics accordions are supposed to be animated (_default_ `false`)
 - `characteristicBorderColor` (string) Border color of a characteristic section (e.g. `#57606a`)
-- `showBottomBorder` (boolean) Wether the last characteristic has a border at the bottom (_default_ `true`)
 - `characteristicValueBorderColor`(string) Border color of a characteristic value (e.g. `#57606a`)
 - `characteristicValueBorderColorSelected` (string) Border color of a selected characteristic value (e.g.`#0969da`)
-- `propertyWithColor` (string) An (additional) product property which contains a css color for a swatch.
-- `colorCharacteristic` (Array) A list of characteristic labels which are supposed to be displayed as swatches.
+- `showBottomBorder` (boolean) Whether the last characteristic has a border at the bottom (_default_ `true`)
+- `useImageAsSwatch` (boolean) Whether the swatch should be shown as an image (_default_ `false`)
+- `showSwatchAsCircle` (boolean) Whether the swatch is shown as a rectangle or a circle (_default_ `false`)
+- `showLabelBelowSwatch` (boolean) Whether the label of the swatch is shown below the swatch itself (_default_ `false`)
+- `imageOverlayLabelColor` (string) Text color of the optional image overlay label (_default_ `#fff`)
+- `propertyWithColor` (string) An (additional) product property which contains a css color for a swatch. (_default_ ``)
+- `colorCharacteristic` (Array) A list of characteristic names which are used as color swatch (e.g. ['Color', 'Shoe Color', 'Farbe'] (_default_ `null`)
 
 ## Classes
 

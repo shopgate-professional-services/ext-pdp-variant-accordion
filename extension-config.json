@@ -105,7 +105,7 @@
       "destination": "frontend",
       "default": "#fff",
       "params": {
-        "type": "number",
+        "type": "text",
         "label": "Text color of the optional image overlay label"
       }
     },
@@ -124,7 +124,7 @@
       "destination": "frontend",
       "default": null,
       "params": {
-        "label": "Characteristic names which are used as color swatch (e.g.['Color', 'Shoe Color', 'Farbe']",
+        "label": "A list of characteristic names which are used as color swatch (e.g. ['Color', 'Shoe Color', 'Farbe']",
         "type": "json",
         "required": true
       }
