@@ -18,6 +18,8 @@ This extension will replace the default variant selection on PDP with an accordi
 - `imageOverlayLabelColor` (string) Text color of the optional image overlay label (_default_ `#fff`)
 - `propertyWithColor` (string) An (additional) product property which contains a css color for a swatch. (_default_ ``)
 - `colorCharacteristic` (Array) A list of characteristic names which are used as color swatch (e.g. ['Color', 'Shoe Color', 'Farbe'] (_default_ `null`)
+- `imageSwatchSize` (number) The size of the image in pixel.
+- `imageSwatchBackgroundSize` (string) Defines how the image will be shown.V alue must be a property of CSS backgroundsize
 
 ## Classes
 

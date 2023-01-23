@@ -128,6 +128,25 @@
         "type": "json",
         "required": true
       }
+    },
+    "imageSwatchSize": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": 50,
+      "params": {
+        "type": "number",
+        "label": "The size of the image in pixel."
+      }
+    },
+    "imageSwatchBackgroundSize": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": "cover",
+      "params": {
+        "label": "Value must be a property of CSS backgroundsize",
+        "type": "text",
+        "required": true
+      }
     }
   }
 }

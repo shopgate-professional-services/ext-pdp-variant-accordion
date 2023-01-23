@@ -17,6 +17,8 @@ const {
   showLabelBelowSwatch,
   colorCharacteristic,
   imageOverlayLabelColor,
+  imageSwatchSize,
+  imageSwatchBackgroundSize,
 } = config;
 
 const borderColor = characteristicValueBorderColor || '#DCDCDC';
@@ -65,11 +67,12 @@ const styles = {
   }).toString(),
   imageOverlayLabel: css({
     fontSize: '12px',
-    lineHeight: '50px',
+    lineHeight: `${imageSwatchSize}px`,
     color: imageOverlayLabelColor || '#fff',
   }).toString(),
   labelBelowSwatch: css({
     marginTop: '4px',
+    fontSize: '0.6rem',
   }).toString(),
 };
 
@@ -147,6 +150,9 @@ const CharacteristicValue = ({
               style={{
                 background: swatchColor,
                 backgroundImage: `url(${swatchImage ? swatchImage.imageUrl : ''})`,
+                backgroundSize: imageSwatchBackgroundSize,
+                width: `${imageSwatchSize}px`,
+                height: `${imageSwatchSize}px`,
               }}
             >
               { swatchImage && swatchImage.imageOverlayLabel ? (
