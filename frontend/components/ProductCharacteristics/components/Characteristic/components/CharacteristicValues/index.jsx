@@ -11,6 +11,7 @@ const { colors } = themeConfig;
 const {
   horizontalInsets,
   animate,
+  sortColorImageCharacteristic,
 } = config;
 
 const insets = horizontalInsets || 0;
@@ -90,6 +91,39 @@ const CharacteristicValues = ({
     }, animationDuration * 2);
   }, [open, values]);
 
+  /**
+   * Get an sort number from value label and sortValues
+   * @param {Object} value Product values object
+   * @param {Array} sortValuesArray Array of labels in the order they should be sorted
+   * @return {number}
+  */
+  const valueToIndex = (value, sortValuesArray) => {
+    const { label } = value || {};
+
+    if (!label) {
+      return sortValuesArray.length;
+    }
+
+    const valueIndex = sortValuesArray.indexOf(label);
+
+    return valueIndex < 0 ? sortValuesArray.length : valueIndex;
+  };
+
+  const sortColorImageCharacteristicArray = sortColorImageCharacteristic
+    .split(',')
+    .filter(sortChar => !!sortChar)
+    .map(sortChar => sortChar.trim());
+
+  const sortedValues = values
+    .filter((value) => {
+      const { label } = value || {};
+      return !!label;
+    })
+    .sort((valueA, valueB) => (
+      // eslint-disable-next-line max-len
+      valueToIndex(valueA, sortColorImageCharacteristicArray) - valueToIndex(valueB, sortColorImageCharacteristicArray)
+    ));
+
   return (
     <div
       className={classNames(styles.root, 'pdp-variant-accordion__characteristic__values', {
@@ -99,7 +133,7 @@ const CharacteristicValues = ({
       <div className={styles.container} ref={containerRef}>
         <div className={classNames(styles.terminator)}>&nbsp;</div>
         <div className={styles.valuesContainer}>
-          { values.map(value => (
+          { sortedValues.map(value => (
             <CharacteristicValue
               key={value.id}
               characteristicId={characteristicId}

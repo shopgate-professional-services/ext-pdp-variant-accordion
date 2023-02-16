@@ -147,6 +147,16 @@
         "type": "text",
         "required": true
       }
+    },
+    "sortColorImageCharacteristic": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": "",
+      "params": {
+        "label": "Sort the Color Image Characteristic. String of the values",
+        "type": "text",
+        "required": true
+      }
     }
   }
 }
