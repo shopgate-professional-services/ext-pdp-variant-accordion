@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "id": "@shopgate-project/pdp-variant-accordion",
   "components": [
     {
@@ -34,7 +34,7 @@
       "default": false,
       "params": {
         "type": "checkbox",
-        "label": "Wether the characteristics accordions are animated"
+        "label": "Whether the characteristics accordions are animated"
       }
     },
     "characteristicBorderColor": {
@@ -70,7 +70,43 @@
       "default": true,
       "params": {
         "type": "checkbox",
-        "label": "Wether the last characteristic has a border at the bottom"
+        "label": "Whether the last characteristic has a border at the bottom"
+      }
+    },
+    "useImageAsSwatch": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": false,
+      "params": {
+        "type": "checkbox",
+        "label": "Whether the swatch should be shown as an image"
+      }
+    },
+    "showSwatchAsCircle": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": false,
+      "params": {
+        "type": "checkbox",
+        "label": "Whether the swatch is shown as a rectangle or a circle"
+      }
+    },
+    "showLabelBelowSwatch": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": false,
+      "params": {
+        "type": "checkbox",
+        "label": "Whether the label of the swatch is shown below the swatch itself"
+      }
+    },
+    "imageOverlayLabelColor": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": "#fff",
+      "params": {
+        "type": "text",
+        "label": "Text color of the optional image overlay label"
       }
     },
     "propertyWithColor": {
@@ -88,8 +124,37 @@
       "destination": "frontend",
       "default": null,
       "params": {
-        "label": "Characteristic names which are used as color swatch (e.g.['Color', 'Shoe Color', 'Farbe']",
+        "label": "A list of characteristic names which are used as color swatch (e.g. ['Color', 'Shoe Color', 'Farbe']",
         "type": "json",
+        "required": true
+      }
+    },
+    "imageSwatchSize": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": 50,
+      "params": {
+        "type": "number",
+        "label": "The size of the image in pixel."
+      }
+    },
+    "imageSwatchBackgroundSize": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": "cover",
+      "params": {
+        "label": "Value must be a property of CSS backgroundsize",
+        "type": "text",
+        "required": true
+      }
+    },
+    "sortColorImageCharacteristic": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": "",
+      "params": {
+        "label": "Sort the Color Image Characteristic. String of the values",
+        "type": "text",
         "required": true
       }
     }
