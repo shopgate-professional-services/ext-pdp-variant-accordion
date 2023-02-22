@@ -17,10 +17,10 @@ const ProductCharacteristicsProvider = ({
   characteristics,
   products,
   colorCharacteristic,
+  colorImageCharacteristic,
   children,
 }) => {
   const [characteristicStates, setCharacteristicStates] = useState(null);
-
   // Initialize the characteristic states
   useEffect(() => {
     if (
@@ -62,7 +62,6 @@ const ProductCharacteristicsProvider = ({
     if (!colorCharacteristic || characteristic.id !== colorCharacteristic.id) {
       return null;
     }
-
     const { color } = colorCharacteristic.values.find(({ id }) => id === value.id) || {};
 
     if (!color) {
@@ -77,13 +76,35 @@ const ProductCharacteristicsProvider = ({
    */
   const productVariants = products || null;
 
+  /* Determines a swatch image that's displayed instead of a characteristic value label or color
+   * @returns {string|null}
+   */
+  const getSwatchImage = useCallback((characteristic, value) => {
+    if (!colorImageCharacteristic || characteristic.id !== colorImageCharacteristic.id) {
+      return null;
+    }
+    const {
+      imageUrl,
+      imageOverlayLabel,
+    } = colorImageCharacteristic.values.find(({ id }) => id === value.id) || {};
+
+    if (!imageUrl) {
+      return null;
+    }
+    return {
+      imageUrl,
+      imageOverlayLabel,
+    };
+  }, [colorImageCharacteristic]);
+
   const value = useMemo(() => ({
     allowMultipleOpen,
     productVariants,
     characteristicStates: characteristicStates || [],
     setOpenState,
     getSwatchColor,
-  }), [productVariants, characteristicStates, getSwatchColor, setOpenState]);
+    getSwatchImage,
+  }), [productVariants, characteristicStates, getSwatchColor, getSwatchImage, setOpenState]);
 
   return (
     <Context.Provider value={value}>
@@ -96,11 +117,13 @@ ProductCharacteristicsProvider.propTypes = {
   characteristics: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   children: PropTypes.node,
   colorCharacteristic: PropTypes.shape(),
+  colorImageCharacteristic: PropTypes.shape(),
   products: PropTypes.arrayOf(PropTypes.shape()),
 };
 
 ProductCharacteristicsProvider.defaultProps = {
   colorCharacteristic: null,
+  colorImageCharacteristic: null,
   children: null,
   products: null,
 };

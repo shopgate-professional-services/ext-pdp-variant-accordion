@@ -1,7 +1,8 @@
 import { createSelector } from 'reselect';
 import { getProductVariants } from '@shopgate/engage/product';
 import { isDev } from '@shopgate/engage/core';
-import { colorCharacteristic, propertyWithColor } from '../config';
+import { colorCharacteristic, propertyWithColor, useImageAsSwatch } from '../config';
+import { IMAGE_OVERLAY_LABEL, IMAGE_URL, SWATCH_IMAGE_PREFIX } from '../constants';
 
 export const getColorCharacteristic = createSelector(
   getProductVariants,
@@ -23,7 +24,6 @@ export const getColorCharacteristic = createSelector(
       const { additionalProperties } = variants.products.find(p => (
         p.characteristics[characteristic.id] === value.id
       )) || {};
-
       let property;
 
       if (additionalProperties) {
@@ -46,6 +46,65 @@ export const getColorCharacteristic = createSelector(
       return {
         ...value,
         color: property ? property.value : null,
+      };
+    }).filter(Boolean);
+
+    return {
+      ...characteristic,
+      values: updateValues,
+    };
+  }
+);
+
+export const getColorImageCharacteristic = createSelector(
+  getProductVariants,
+  (variants) => {
+    if (!variants || !Array.isArray(colorCharacteristic) || !useImageAsSwatch) {
+      return null;
+    }
+
+    const characteristic = variants.characteristics.find(char => (
+      colorCharacteristic.includes(char.label)
+    ));
+
+    if (!characteristic) {
+      return null;
+    }
+
+    const updateValues = characteristic.values.map((value) => {
+      const { additionalProperties } = variants.products.find(p => (
+        p.characteristics[characteristic.id] === value.id
+      )) || {};
+      let property;
+      let imageUrl;
+      let imageOverlayLabel = null;
+
+      if (additionalProperties) {
+        property = additionalProperties.find(p => p.label.toUpperCase() === `${SWATCH_IMAGE_PREFIX}${value.label}`.toUpperCase());
+
+        if (!property) {
+          imageUrl = null;
+          imageOverlayLabel = null;
+        } else {
+          const values = property.value.split(',').map(vp => vp.trim());
+          values.forEach((v) => {
+            const valueParts = v.split('~');
+            const propLabel = valueParts[0];
+            const propValue = valueParts[1];
+            if (propLabel === IMAGE_URL) {
+              imageUrl = propValue;
+            }
+            if (propLabel === IMAGE_OVERLAY_LABEL) {
+              imageOverlayLabel = propValue;
+            }
+          });
+        }
+      }
+
+      return {
+        ...value,
+        imageUrl,
+        imageOverlayLabel,
       };
     }).filter(Boolean);
 

@@ -14,6 +14,12 @@ const { colors } = themeConfig;
 const {
   characteristicValueBorderColor,
   characteristicValueBorderColorSelected,
+  showSwatchAsCircle,
+  showLabelBelowSwatch,
+  colorCharacteristic,
+  imageOverlayLabelColor,
+  imageSwatchSize,
+  imageSwatchBackgroundSize,
 } = config;
 
 const borderColor = characteristicValueBorderColor || '#DCDCDC';
@@ -39,6 +45,12 @@ const styles = {
       opacity: 0.4,
     },
   }).toString(),
+  swatchContainer: css({
+    display: 'block',
+    justifyContent: 'center',
+    textAlign: 'center',
+    minWidth: '80px',
+  }).toString(),
   swatch: css({
     width: '100%',
     borderRadius: 3,
@@ -62,6 +74,26 @@ const styles = {
   asterix: css({
     fontSize: '1.5rem',
     fontWeight: 300,
+  }),
+  swatchAsCircle: css({
+    width: '100%',
+    height: '100%',
+    borderRadius: 50,
+  }).toString(),
+  buttonAsCircle: css({
+    width: '70px',
+    height: '70px',
+    borderRadius: '50px',
+    margin: 'auto',
+  }).toString(),
+  imageOverlayLabel: css({
+    fontSize: '12px',
+    lineHeight: `${imageSwatchSize}px`,
+    color: imageOverlayLabelColor || '#fff',
+  }).toString(),
+  labelBelowSwatch: css({
+    marginTop: '4px',
+    fontSize: '0.6rem',
   }).toString(),
 };
 
@@ -97,9 +129,14 @@ const CharacteristicValue = ({
     };
   }, [price]);
 
-  const { getSwatchColor } = useProductCharacteristics();
+  const { getSwatchColor, getSwatchImage } = useProductCharacteristics();
 
   const clickable = useMemo(() => typeof onClick === 'function', [onClick]);
+
+  const isColorCharacteristicLabel = useMemo(
+    () => Array.isArray(colorCharacteristic) &&
+    colorCharacteristic.includes(characteristicLabel), [characteristicLabel]
+  );
 
   // Determine if the value needs to be displayed as a swatch
   const swatchColor = useMemo(() => getSwatchColor({
@@ -107,17 +144,24 @@ const CharacteristicValue = ({
     label: characteristicLabel,
   }, value), [value, characteristicId, characteristicLabel, getSwatchColor]);
 
+  // Determine if the value needs to be displayed as a swatch image
+  const swatchImage = useMemo(() => getSwatchImage({
+    id: characteristicId,
+    label: characteristicLabel,
+  }, value), [value, characteristicId, characteristicLabel, getSwatchImage]);
+
   const classes = useMemo(() => classNames(
     styles.root,
     className,
     'pdp-variant-accordion__characteristic__value',
+    showSwatchAsCircle && isColorCharacteristicLabel ? styles.buttonAsCircle : null,
     {
       [styles.selected]: clickable && selected,
       [styles.disabled]: !selectable,
       selected: clickable && selected,
       disabled: !selectable,
     }
-  ), [className, selectable, selected, clickable]);
+  ), [className, selectable, selected, clickable, isColorCharacteristicLabel]);
 
   const handleClick = useCallback(() => {
     if (selectable && onClick) {
@@ -134,51 +178,76 @@ const CharacteristicValue = ({
   }, [selectable, handleClick, onClick]);
 
   return (
-    <Component className={classes}>
-      { swatchColor ? (
-        <span className={styles.swatch} style={{ background: swatchColor }}>&nbsp;</span>
-      ) : (
-        <Fragment>
-          <div className={styles.container}>
-            <span>
-              {label}
+    <div className={styles.swatchContainer}>
+      <Component className={classes}>
+        { swatchColor || swatchImage ? (
+          <>
+            <span
+              className={
+                showSwatchAsCircle &&
+                isColorCharacteristicLabel ? styles.swatchAsCircle : styles.swatch
+              }
+              style={{
+                background: swatchColor,
+                backgroundImage: `url(${swatchImage ? swatchImage.imageUrl : ''})`,
+                backgroundSize: imageSwatchBackgroundSize,
+                width: `${imageSwatchSize}px`,
+                height: `${imageSwatchSize}px`,
+              }}
+            >
+              { swatchImage && swatchImage.imageOverlayLabel ? (
+                <span className={styles.imageOverlayLabel}>{swatchImage ? swatchImage.imageOverlayLabel : ''}</span>
+              ) : null}
             </span>
-            <div className={styles.priceContainer}>
-              {priceStriked ? (
-                <>
-                  <PriceStriked
-                    value={priceStriked}
-                    currency={currency}
-                    className={styles.priceStriked}
-                  />
-                </>
-              ) : null}
-              {currency ? (
-                <>
-                  <Price
-                    unitPrice={unitPrice}
-                    currency={currency}
-                    className={styles.price}
-                  />
-                  <span className={styles.asterix}>
-                    {'*'}
-                  </span>
-                </>
-              ) : null}
-              <span className={styles.basePrice}>
-                { basePrice ? (
+          </>
+        ) : (
+          <Fragment>
+            <div className={styles.container}>
+              <span>
+                {label}
+              </span>
+              <div className={styles.priceContainer}>
+                {priceStriked ? (
                   <>
-                    <HtmlSanitizer>
-                      {basePrice}
-                    </HtmlSanitizer>
+                    <PriceStriked
+                      value={priceStriked}
+                      currency={currency}
+                      className={styles.priceStriked}
+                    />
                   </>
                 ) : null}
-              </span>
+                {currency ? (
+                  <>
+                    <Price
+                      unitPrice={unitPrice}
+                      currency={currency}
+                      className={styles.price}
+                    />
+                    <span className={styles.asterix}>
+                      {'*'}
+                    </span>
+                  </>
+                ) : null}
+                <span className={styles.basePrice}>
+                  { basePrice ? (
+                    <>
+                      <HtmlSanitizer>
+                        {basePrice}
+                      </HtmlSanitizer>
+                    </>
+                  ) : null}
+                </span>
+              </div>
             </div>
-          </div>
-        </Fragment>
-      )}
-    </Component>
+          </Fragment>
+        )}
+      </Component>
+      { showLabelBelowSwatch && isColorCharacteristicLabel ? (
+        <p className={styles.labelBelowSwatch}>
+          {label}
+        </p>
+      ) : null}
+    </div>
   );
 };
 
