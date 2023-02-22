@@ -1,8 +1,15 @@
 # Shopgate Connect - Extension pdp-variant-accordion
 
-This extension will replace the default variant selection on PDP with an accordion style version. It also supports color swatches via additional product properties, provided by [@shopgate-project/products-properties](https://github.com/shopgate-professional-services/ext-products-properties)
+This extension will replace the default variant selection on PDP with an accordion style version.<br />
+It also supports color and image swatches via additional product properties, provided by [@shopgate-project/products-properties](https://github.com/shopgate-professional-services/ext-products-properties)
 
-![](assets/01.png)
+<br />
+
+## Preview with color swatches
+![](assets/01.png) <br />
+
+## Preview with image swatches
+![](assets/02.png)
 
 ## Config
 - `horizontalInsets` (number) Horizontal insets for the characteristics in pixels (e.g. 16)
