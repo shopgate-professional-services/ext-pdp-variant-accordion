@@ -15,6 +15,7 @@ const allowMultipleOpen = false;
  */
 const ProductCharacteristicsProvider = ({
   characteristics,
+  products,
   colorCharacteristic,
   colorImageCharacteristic,
   children,
@@ -71,7 +72,11 @@ const ProductCharacteristicsProvider = ({
   }, [colorCharacteristic]);
 
   /**
-   * Determines a swatch image that's displayed instead of a characteristic value label or color
+   * Products
+   */
+  const productVariants = products || null;
+
+  /* Determines a swatch image that's displayed instead of a characteristic value label or color
    * @returns {string|null}
    */
   const getSwatchImage = useCallback((characteristic, value) => {
@@ -94,11 +99,12 @@ const ProductCharacteristicsProvider = ({
 
   const value = useMemo(() => ({
     allowMultipleOpen,
+    productVariants,
     characteristicStates: characteristicStates || [],
     setOpenState,
     getSwatchColor,
     getSwatchImage,
-  }), [characteristicStates, getSwatchColor, getSwatchImage, setOpenState]);
+  }), [productVariants, characteristicStates, getSwatchColor, getSwatchImage, setOpenState]);
 
   return (
     <Context.Provider value={value}>
@@ -112,12 +118,14 @@ ProductCharacteristicsProvider.propTypes = {
   children: PropTypes.node,
   colorCharacteristic: PropTypes.shape(),
   colorImageCharacteristic: PropTypes.shape(),
+  products: PropTypes.arrayOf(PropTypes.shape()),
 };
 
 ProductCharacteristicsProvider.defaultProps = {
   colorCharacteristic: null,
   colorImageCharacteristic: null,
   children: null,
+  products: null,
 };
 
 export default connect(ProductCharacteristicsProvider);

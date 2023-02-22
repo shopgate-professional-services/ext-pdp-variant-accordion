@@ -3,6 +3,7 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { Price, PriceStriked, HtmlSanitizer } from '@shopgate/engage/components';
 import { css } from 'glamor';
 import { themeConfig } from '@shopgate/pwa-common/helpers/config';
 import { useProductCharacteristics } from '../../../../hooks';
@@ -54,6 +55,26 @@ const styles = {
     width: '100%',
     borderRadius: 3,
   }).toString(),
+  container: css({
+    display: 'block',
+    textAlign: 'center',
+  }).toString(),
+  priceContainer: css({
+    display: 'block',
+  }).toString(),
+  priceStriked: css({
+    fontSize: '1.25rem',
+  }).toString(),
+  price: css({
+    display: 'inline-block',
+    color: colors.primary,
+    fontSize: '1.5rem',
+    fontWeight: 600,
+  }).toString(),
+  asterix: css({
+    fontSize: '1.5rem',
+    fontWeight: 300,
+  }),
   swatchAsCircle: css({
     width: '100%',
     height: '100%',
@@ -86,8 +107,27 @@ const CharacteristicValue = ({
   value, className, onClick, characteristicId, characteristicLabel,
 }) => {
   const {
-    id, label, selected, selectable,
+    id, label, selected, selectable, price,
   } = value;
+
+  // Extract required injected price data from the characteristic value
+  const {
+    basePrice,
+    unitPrice,
+    currency,
+    priceStriked,
+  } = useMemo(() => {
+    if (!price) {
+      return {};
+    }
+
+    return {
+      basePrice: price.info,
+      unitPrice: price.unitPrice,
+      currency: price.currency,
+      priceStriked: price.unitPriceStriked,
+    };
+  }, [price]);
 
   const { getSwatchColor, getSwatchImage } = useProductCharacteristics();
 
@@ -162,7 +202,43 @@ const CharacteristicValue = ({
           </>
         ) : (
           <Fragment>
-            {label}
+            <div className={styles.container}>
+              <span>
+                {label}
+              </span>
+              <div className={styles.priceContainer}>
+                {priceStriked ? (
+                  <>
+                    <PriceStriked
+                      value={priceStriked}
+                      currency={currency}
+                      className={styles.priceStriked}
+                    />
+                  </>
+                ) : null}
+                {currency ? (
+                  <>
+                    <Price
+                      unitPrice={unitPrice}
+                      currency={currency}
+                      className={styles.price}
+                    />
+                    <span className={styles.asterix}>
+                      {'*'}
+                    </span>
+                  </>
+                ) : null}
+                <span className={styles.basePrice}>
+                  { basePrice ? (
+                    <>
+                      <HtmlSanitizer>
+                        {basePrice}
+                      </HtmlSanitizer>
+                    </>
+                  ) : null}
+                </span>
+              </div>
+            </div>
           </Fragment>
         )}
       </Component>

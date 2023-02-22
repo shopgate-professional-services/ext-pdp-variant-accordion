@@ -1,5 +1,5 @@
 {
-  "version": "1.1.0",
+  "version": "1.2.0",
   "id": "@shopgate-project/pdp-variant-accordion",
   "components": [
     {
@@ -135,7 +135,8 @@
       "default": 50,
       "params": {
         "type": "number",
-        "label": "The size of the image in pixel."
+        "label": "The size of the image in pixel.",
+        "required": true
       }
     },
     "imageSwatchBackgroundSize": {
@@ -155,6 +156,16 @@
       "params": {
         "label": "Sort the Color Image Characteristic. String of the values",
         "type": "text",
+        "required": true
+      }
+    },
+    "showVariantPrices": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": false,
+      "params": {
+        "label": "Shows the prices in the variant selection (if product has only one characteristic!)",
+        "type": "json",
         "required": true
       }
     }

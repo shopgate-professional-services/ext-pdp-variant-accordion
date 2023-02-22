@@ -11,7 +11,15 @@ import { getColorCharacteristic, getColorImageCharacteristic } from '../../selec
  */
 const mapStateToProps = (state, props) => {
   const variants = getProductVariants(state, props);
+
+  // Check if base product has only a single characteristic (required be able to show prices)
+  const hasSingleCharacteristic =
+    variants &&
+    Array.isArray(variants.characteristics) &&
+    variants.characteristics.length === 1;
+
   return {
+    products: hasSingleCharacteristic ? variants.products : null,
     characteristics: variants ? variants.characteristics : [],
     colorCharacteristic: getColorCharacteristic(state, props),
     colorImageCharacteristic: getColorImageCharacteristic(state, props),

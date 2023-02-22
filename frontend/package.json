@@ -1,6 +1,6 @@
 {
   "name": "@shopgate-project/pdp-variant-accordion",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "Extension will replace the default variant selection on PDP with an accordion style version.",
   "license": "Apache-2.0",
   "scripts": {

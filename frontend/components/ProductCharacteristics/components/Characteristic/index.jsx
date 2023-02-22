@@ -1,5 +1,6 @@
 import React, { useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
+import find from 'lodash/find';
 import { css } from 'glamor';
 import classNames from 'classnames';
 import Transition from 'react-transition-group/Transition';
@@ -16,6 +17,7 @@ const {
   horizontalInsets,
   characteristicBorderColor,
   showTrailingBorder,
+  showVariantPrices,
 } = config;
 
 const insets = horizontalInsets || 0;
@@ -98,6 +100,7 @@ const Characteristic = ({
     characteristicStates,
     setOpenState,
     allowMultipleOpen,
+    productVariants,
   } = useProductCharacteristics();
 
   // Determine the states for the current characteristic
@@ -126,6 +129,30 @@ const Characteristic = ({
       value: valueId,
     });
   }, [allowMultipleOpen, disabled, id, select, setOpenState]);
+
+  /**
+   * The following code extends the characteristic values array with price data from the
+   * products list.
+   *
+   * If no price data is available, the original values array will be passed to the
+   * CharacteristicValues component which will not display any price properties.
+   */
+  const enrichedValues = useMemo(() => {
+    if (!productVariants || !showVariantPrices) {
+      return values;
+    }
+
+    const enriched = values.map((value) => {
+      const match = find(productVariants, { characteristics: { [id]: value.id } });
+
+      return {
+        ...value,
+        ...(match ? { price: match.price } : null),
+      };
+    });
+
+    return enriched;
+  }, [id, productVariants, values]);
 
   return (
     <Transition in={highlight} timeout={500} onEntered={resetHighlight}>
@@ -172,7 +199,7 @@ const Characteristic = ({
             <CharacteristicValues
               characteristicId={id}
               characteristicLabel={label}
-              values={values}
+              values={enrichedValues}
               open={isOpen}
               onClick={handleValueClick}
             />
