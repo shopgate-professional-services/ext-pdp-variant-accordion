@@ -3,10 +3,12 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import connect from './connector';
+import config from '../../config';
 
 export const Context = createContext();
 
 const allowMultipleOpen = false;
+const { variantSelectionAlwaysOpen } = config;
 
 /**
  * ProductCharacteristicsProvider
@@ -33,7 +35,7 @@ const ProductCharacteristicsProvider = ({
 
     const initial = characteristics.map(({ id }, index) => ({
       id,
-      isOpen: false,
+      isOpen: variantSelectionAlwaysOpen,
       isLast: index === characteristics.length - 1,
     }));
 

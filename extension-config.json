@@ -1,5 +1,5 @@
 {
-  "version": "1.2.0",
+  "version": "1.3.0",
   "id": "@shopgate-project/pdp-variant-accordion",
   "components": [
     {
@@ -162,9 +162,19 @@
     "showVariantPrices": {
       "type": "admin",
       "destination": "frontend",
-      "default": false,
+      "default": true,
       "params": {
         "label": "Shows the prices in the variant selection (if product has only one characteristic!)",
+        "type": "json",
+        "required": true
+      }
+    },
+    "variantSelectionAlwaysOpen": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": false,
+      "params": {
+        "label": "Defines whether the variant selection is always open or not (if product has only one characteristic!)",
         "type": "json",
         "required": true
       }

@@ -18,6 +18,7 @@ const {
   characteristicBorderColor,
   showTrailingBorder,
   showVariantPrices,
+  variantSelectionAlwaysOpen,
 } = config;
 
 const insets = horizontalInsets || 0;
@@ -116,7 +117,7 @@ const Characteristic = ({
 
   const handleClick = useCallback(() => {
     if (disabled) return;
-    setOpenState(id, !isOpen);
+    setOpenState(id, variantSelectionAlwaysOpen ? true : !isOpen);
   }, [disabled, id, isOpen, setOpenState]);
 
   const handleValueClick = useCallback((valueId) => {

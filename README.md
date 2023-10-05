@@ -29,6 +29,7 @@ It also supports color and image swatches via additional product properties, pro
 - `imageSwatchBackgroundSize` (string) Defines how the image will be shown.V alue must be a property of CSS backgroundsize (_default_ `cover`)
 - `sortColorImageCharacteristic` (string) Sort the Color Image Characteristic. String of the values (_default_ ``)
 - `showVariantPrices` (boolean) Shows the prices in the variant selection (if product has only one characteristic!) (_default_ `false`)
+- `variantSelectionAlwaysOpen` (boolean) Defines whether the variant selection is always open or not (if product has only one characteristic!) (_default_ `false`)
 
 ## Classes
 
