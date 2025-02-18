@@ -84,7 +84,7 @@ export const getColorImageCharacteristic = createSelector(
       let imageUrl;
       let imageOverlayLabel = null;
 
-      if (characteristicValueImageMapping[value?.label]) {
+      if (characteristicValueImageMapping?.[value.label]) {
         const {
           imageOverlayLabel: overlayLabel,
           imageUrl: url,
