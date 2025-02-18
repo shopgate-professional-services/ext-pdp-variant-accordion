@@ -30,10 +30,10 @@ It also supports color and image swatches via additional product properties, pro
 - `sortColorImageCharacteristic` (string) Sort the Color Image Characteristic. String of the values (_default_ ``)
 - `showVariantPrices` (boolean) Shows the prices in the variant selection (if product has only one characteristic!) (_default_ `false`)
 - `variantSelectionAlwaysOpen` (boolean) Defines whether the variant selection is always open or not (if product has only one characteristic!) (_default_ `false`)
-- `characteristicImageMapping` (Object) Each entry in the object represents a unique characteristic (e.g. color) with its associated image and overlay label.
+- `characteristicValueImageMapping` (Object) Each entry in the object represents a unique characteristic (e.g. color) with its associated image and overlay label.
 ```json
-  "characteristicImageMapping": {
-      "black #01": { // characteristic name
+  "characteristicValueImageMapping": {
+      "black #01": { // characteristic value
           "imageOverlayLabel": "01",
           "imageUrl": "https://exmaple.com/cdn/shop/files/01_black.jpg"
       },

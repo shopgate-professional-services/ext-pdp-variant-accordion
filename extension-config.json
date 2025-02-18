@@ -179,7 +179,7 @@
         "required": true
       }
     },
-    "characteristicImageMapping": {
+    "characteristicValueImageMapping": {
       "type": "admin",
       "destination": "frontend",
       "default": {},

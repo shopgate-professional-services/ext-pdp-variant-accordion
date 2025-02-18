@@ -5,7 +5,7 @@ import {
   colorCharacteristic,
   propertyWithColor,
   useImageAsSwatch,
-  characteristicImageMapping,
+  characteristicValueImageMapping,
 } from '../config';
 import { IMAGE_OVERLAY_LABEL, IMAGE_URL, SWATCH_IMAGE_PREFIX } from '../constants';
 
@@ -84,11 +84,11 @@ export const getColorImageCharacteristic = createSelector(
       let imageUrl;
       let imageOverlayLabel = null;
 
-      if (characteristicImageMapping[value.label]) {
+      if (characteristicValueImageMapping[value?.label]) {
         const {
           imageOverlayLabel: overlayLabel,
           imageUrl: url,
-        } = characteristicImageMapping[value.label];
+        } = characteristicValueImageMapping[value.label];
         imageOverlayLabel = overlayLabel;
         imageUrl = url;
       } else if (additionalProperties) {
