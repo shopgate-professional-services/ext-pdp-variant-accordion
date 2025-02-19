@@ -1,5 +1,5 @@
 {
-  "version": "1.3.0",
+  "version": "1.4.0",
   "id": "@shopgate-project/pdp-variant-accordion",
   "components": [
     {
@@ -175,6 +175,16 @@
       "default": false,
       "params": {
         "label": "Defines whether the variant selection is always open or not (if product has only one characteristic!)",
+        "type": "json",
+        "required": true
+      }
+    },
+    "characteristicValueImageMapping": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": {},
+      "params": {
+        "label": "Mapping of product variants to their corresponding image URLs and labels.",
         "type": "json",
         "required": true
       }
