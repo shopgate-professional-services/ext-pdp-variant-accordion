@@ -180,6 +180,8 @@ const Characteristic = ({
               onClick={handleClick}
               onKeyDown={() => {}}
               role="button"
+              aria-expanded={isOpen}
+              aria-disabled={disabled}
               tabIndex="-1"
             >
               <div className={styles.label}>

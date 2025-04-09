@@ -129,6 +129,7 @@ const CharacteristicValues = ({
       className={classNames(styles.root, 'pdp-variant-accordion__characteristic__values', {
         [styles.open]: open,
       })}
+      aria-hidden={!open}
     >
       <div className={styles.container} ref={containerRef}>
         <div className={classNames(styles.terminator)}>&nbsp;</div>
