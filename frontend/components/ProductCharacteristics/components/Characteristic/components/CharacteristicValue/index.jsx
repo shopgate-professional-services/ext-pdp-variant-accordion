@@ -171,11 +171,18 @@ const CharacteristicValue = ({
 
   const Component = useCallback((props) => {
     if (onClick) {
-      return (<button type="button" onClick={handleClick} disabled={!selectable} {...props} />);
+      return (<button
+        type="button"
+        aria-disabled={!selectable}
+        aria-pressed={selected}
+        onClick={handleClick}
+        disabled={!selectable}
+        {...props}
+      />);
     }
 
     return (<div {...props} />);
-  }, [selectable, handleClick, onClick]);
+  }, [onClick, selectable, selected, handleClick]);
 
   return (
     <div className={styles.swatchContainer}>
