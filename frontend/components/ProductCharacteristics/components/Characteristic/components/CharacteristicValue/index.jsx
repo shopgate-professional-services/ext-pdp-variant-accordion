@@ -61,6 +61,7 @@ const styles = {
   }).toString(),
   priceContainer: css({
     display: 'block',
+    position: 'relative',
   }).toString(),
   priceStriked: css({
     fontSize: '1.25rem',
