@@ -16,6 +16,7 @@ const { variantSelectionAlwaysOpen } = config;
  * @returns {JSX}
  */
 const ProductCharacteristicsProvider = ({
+  isFetching,
   characteristics,
   products,
   colorCharacteristic,
@@ -100,13 +101,21 @@ const ProductCharacteristicsProvider = ({
   }, [colorImageCharacteristic]);
 
   const value = useMemo(() => ({
+    isFetching,
     allowMultipleOpen,
     productVariants,
     characteristicStates: characteristicStates || [],
     setOpenState,
     getSwatchColor,
     getSwatchImage,
-  }), [productVariants, characteristicStates, getSwatchColor, getSwatchImage, setOpenState]);
+  }), [
+    isFetching,
+    productVariants,
+    characteristicStates,
+    getSwatchColor,
+    getSwatchImage,
+    setOpenState,
+  ]);
 
   return (
     <Context.Provider value={value}>
@@ -117,6 +126,7 @@ const ProductCharacteristicsProvider = ({
 
 ProductCharacteristicsProvider.propTypes = {
   characteristics: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  isFetching: PropTypes.bool.isRequired,
   children: PropTypes.node,
   colorCharacteristic: PropTypes.shape(),
   colorImageCharacteristic: PropTypes.shape(),

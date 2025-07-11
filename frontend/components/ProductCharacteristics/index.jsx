@@ -5,12 +5,13 @@ import {
   ProductCharacteristics as EngageProductCharacteristics,
 } from '@shopgate/engage/product';
 import { useCurrentProduct } from '@shopgate/engage/core';
+import { PlaceholderParagraph } from '@shopgate/engage/components';
 import Characteristic from './components/Characteristic';
-import ProductCharacteristicsProvider from './Provider';
+import ProductCharacteristicsProvider, { Context } from './Provider';
 
 import config from '../../config';
 
-const { bottomInset = 0 } = config;
+const { bottomInset = 0, placeholderLines = 3 } = config;
 
 const styles = {
   root: css({
@@ -18,6 +19,12 @@ const styles = {
     ':empty': {
       display: 'none',
     },
+    '& .ui-shared__placeholder-paragraph': css({
+      padding: 16,
+    }),
+  }).toString(),
+  placeholder: css({
+    height: '0.875rem',
   }).toString(),
 };
 
@@ -41,14 +48,26 @@ const ProductCharacteristics = () => {
   return (
     <div className={classNames(styles.root, 'pdp-variant-accordion')}>
       <ProductCharacteristicsProvider productId={productId} variantId={variantId}>
-        <EngageProductCharacteristics
-          productId={productId}
-          variantId={variantId}
-          conditioner={conditioner}
-          setCharacteristics={setCharacteristics}
-          finishTimeout={200}
-          render={renderCharacteristic}
-        />
+        <Context.Consumer>
+          {({ isFetching }) => (
+            <PlaceholderParagraph
+              ready={!isFetching}
+              lines={placeholderLines}
+              className={styles.placeholder}
+            >
+              <EngageProductCharacteristics
+                productId={productId}
+                variantId={variantId}
+                conditioner={conditioner}
+                setCharacteristics={setCharacteristics}
+                finishTimeout={200}
+                render={renderCharacteristic}
+              />
+
+            </PlaceholderParagraph>
+          )}
+        </Context.Consumer>
+
       </ProductCharacteristicsProvider>
     </div>
   );

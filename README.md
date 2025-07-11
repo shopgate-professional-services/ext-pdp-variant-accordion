@@ -12,6 +12,7 @@ It also supports color and image swatches via additional product properties, pro
 ![](assets/02.png)
 
 ## Config
+- `placeholderLines` (number) Number of placeholder lines shown while product variants are fetching. When set to 0 placeholder is deactivated. (default `3`)
 - `horizontalInsets` (number) Horizontal insets for the characteristics in pixels (e.g. 16)
 - `bottomInset` (number) Trailing inset for the characteristics block in pixels (e.g. 16)
 - `animate` (boolean) Whether the characteristics accordions are supposed to be animated (_default_ `false`)
