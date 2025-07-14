@@ -50,11 +50,27 @@ It also supports color and image swatches via additional product properties, pro
 
 The extension adds the following classes to its components to enable extended styling from other extensions:
 
-- `pdp-variant-accordion` Applied to the wrapper of the characteristics block
-- `pdp-variant-accordion__characteristic` Applied to each characteristic section
-- `pdp-variant-accordion__characteristic.disabled` Applied to a _disabled_ characteristic section
-- `pdp-variant-accordion__characteristic__header` Applied to the header of a characteristic section
-- `pdp-variant-accordion__characteristic__values` Applied to the values wrapper of a characteristic section
-- `pdp-variant-accordion__characteristic__value` Applied to each characteristic value
-- `pdp-variant-accordion__characteristic__value.selected` Applied to the _selected_ characteristic value
-- `pdp-variant-accordion__characteristic__value.disabled` Applied to a _disabled_ characteristic value
+- `.pdp-variant-accordion` Applied to the wrapper of the characteristics block
+- `.pdp-variant-accordion__characteristic` Applied to each characteristic section
+- `.pdp-variant-accordion__characteristic.disabled` Applied to a _disabled_ characteristic section
+- `.pdp-variant-accordion__characteristic__header` Applied to the header of a characteristic section
+- `.pdp-variant-accordion__characteristic__values` Applied to the values wrapper of a characteristic section
+- `.pdp-variant-accordion__characteristic__value` Applied to each characteristic value
+- `.pdp-variant-accordion__characteristic__value.selected` Applied to the _selected_ characteristic value
+- `.pdp-variant-accordion__characteristic__value.disabled` Applied to a _disabled_ characteristic value
+- `.pdp-variant-accordion .ui-shared__placeholder-paragraph` Can be used to style the container with the fetching placeholder bars
+- `.pdp-variant-accordion .ui-shared__placeholder-paragraph .ui-shared__placeholder-label` Can be used to style one of the fetching placeholder bars
+
+## Simulate fetching placeholder
+Styling the fetching placeholder can be tricky, especially because it’s ideally only visible for a brief moment during normal use. To assist with development and testing, you can manually simulate the fetching state using the browser console.
+
+To activate the fetching state for the currently visible Product Detail Page (PDP), run the following command in the browser’s JavaScript console:
+
+```js
+window.pdpVariantAccordionSimulateFetching(true)
+```
+
+Once you’re done, you can deactivate the fetching state by running:
+```js
+window.pdpVariantAccordionSimulateFetching(false)
+```

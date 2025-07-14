@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { css } from 'glamor';
 import classNames from 'classnames';
 import {
@@ -40,6 +40,14 @@ const ProductCharacteristics = () => {
     conditioner,
   } = useCurrentProduct();
 
+  const [simulateFetching, setSimulateFetching] = useState(false);
+
+  useEffect(() => {
+    window.pdpVariantAccordionSimulateFetching = (simulate = true) => {
+      setSimulateFetching(simulate);
+    };
+  }, []);
+
   const renderCharacteristic = useCallback(
     renderProps => (<Characteristic {...renderProps} />),
     []
@@ -51,7 +59,7 @@ const ProductCharacteristics = () => {
         <Context.Consumer>
           {({ isFetching }) => (
             <PlaceholderParagraph
-              ready={!isFetching}
+              ready={!simulateFetching && !isFetching}
               lines={placeholderLines}
               className={styles.placeholder}
             >
