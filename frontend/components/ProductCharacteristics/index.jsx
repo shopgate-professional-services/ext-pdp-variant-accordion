@@ -42,6 +42,10 @@ const ProductCharacteristics = () => {
 
   const [simulateFetching, setSimulateFetching] = useState(false);
 
+  /**
+   * Effect to set up a global function that allows to simulate the fetching state.
+   * Can be useful when placeholder styling is supposed to be adjusted.
+   */
   useEffect(() => {
     window.pdpVariantAccordionSimulateFetching = (simulate = true) => {
       setSimulateFetching(simulate);
