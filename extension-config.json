@@ -188,6 +188,17 @@
         "type": "json",
         "required": true
       }
+    },
+    "placeholderLines": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": 3,
+      "params": {
+        "label": "Placeholder lines",
+        "description": "Number of lines to show in the placeholder",
+        "type": "number",
+        "required": true
+      }
     }
   }
 }

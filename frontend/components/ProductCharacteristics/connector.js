@@ -1,6 +1,9 @@
 import { connect } from 'react-redux';
 import isEqual from 'lodash/isEqual';
-import { getProductVariants } from '@shopgate/engage/product';
+import {
+  getProductVariants,
+  hasProductVariants,
+} from '@shopgate/engage/product';
 import { getColorCharacteristic, getColorImageCharacteristic } from '../../selectors';
 
 /**
@@ -11,6 +14,7 @@ import { getColorCharacteristic, getColorImageCharacteristic } from '../../selec
  */
 const mapStateToProps = (state, props) => {
   const variants = getProductVariants(state, props);
+  const hasVariants = hasProductVariants(state, props);
 
   // Check if base product has only a single characteristic (required be able to show prices)
   const hasSingleCharacteristic =
@@ -19,6 +23,7 @@ const mapStateToProps = (state, props) => {
     variants.characteristics.length === 1;
 
   return {
+    isFetching: !!hasVariants && !variants,
     products: hasSingleCharacteristic ? variants.products : null,
     characteristics: variants ? variants.characteristics : [],
     colorCharacteristic: getColorCharacteristic(state, props),
