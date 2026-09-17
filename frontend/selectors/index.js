@@ -1,15 +1,13 @@
 import { createSelector } from 'reselect';
 import { getProductVariants } from '@shopgate/engage/product';
 import { isDev } from '@shopgate/engage/core';
-import config from '../config.json';
-import { IMAGE_OVERLAY_LABEL, IMAGE_URL, SWATCH_IMAGE_PREFIX } from '../constants';
-
-const {
+import {
   colorCharacteristic,
   propertyWithColor,
   useImageAsSwatch,
   characteristicValueImageMapping,
-} = config;
+} from '../config';
+import { IMAGE_OVERLAY_LABEL, IMAGE_URL, SWATCH_IMAGE_PREFIX } from '../constants';
 
 export const getColorCharacteristic = createSelector(
   getProductVariants,
