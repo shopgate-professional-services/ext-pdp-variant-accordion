@@ -1,70 +1,86 @@
 import React, { useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import find from 'lodash/find';
+import { css } from 'glamor';
+import classNames from 'classnames';
 import Transition from 'react-transition-group/Transition';
 import { I18n } from '@shopgate/engage/components';
-import { makeStyles } from '@shopgate/engage/styles';
+import { themeConfig } from '@shopgate/pwa-common/helpers/config';
 import CharacteristicValue from './components/CharacteristicValue';
 import CharacteristicValues from './components/CharacteristicValues';
 import { useProductCharacteristics } from '../../hooks';
-import config from '../../../../config.json';
+import config from '../../../../config';
+
+const { colors } = themeConfig;
 
 const {
   horizontalInsets,
   characteristicBorderColor,
-  showBottomBorder,
+  showTrailingBorder,
   showVariantPrices,
   variantSelectionAlwaysOpen,
 } = config;
 
 const insets = horizontalInsets || 0;
+const borderColor = characteristicBorderColor || '#C6C6C6';
 
-const useStyles = makeStyles()(theme => ({
-  root: {
+const styles = {
+  root: css({
     paddingLeft: insets,
     paddingRight: insets,
     transition: 'background 250ms ease-in, color 250ms ease-in',
     cursor: 'pointer',
-  },
-  disabled: {
-    color: theme.palette.text.disabled,
+  }).toString(),
+  disabled: css({
+    color: colors.shade4,
     cursor: 'default !important',
-  },
-  container: {
+  }),
+  container: css({
     borderTop: '1px solid',
-    borderTopColor: characteristicBorderColor || theme.components.border.medium,
+    borderTopColor: borderColor,
     display: 'flex',
     flexDirection: 'column',
     padding: '8px 0',
-  },
-  containerLast: {
-    ...(showBottomBorder ? {
+  }).toString(),
+  containerLast: css({
+    ...(showTrailingBorder ? {
       borderBottom: '1px solid',
-      borderBottomColor: characteristicBorderColor || theme.components.border.medium,
+      borderBottomColor: borderColor,
     } : null),
-  },
-  characteristic: {
+  }).toString(),
+  characteristic: css({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingLeft: insets ? 0 : 16,
     paddingRight: insets ? 0 : 16,
-  },
-  label: {
+  }),
+  label: css({
     display: 'flex',
     fontWeight: 'bold',
     paddingTop: 8,
     paddingBottom: 8,
     paddingRight: 8,
     textAlign: 'left',
-  },
-  value: {
+  }),
+  value: css({
     display: 'flex',
     justifyContent: 'flex-end',
     paddingLeft: 4,
     textAlign: 'right',
+  }),
+};
+
+const transition = {
+  entering: {
+    background: colors.primary,
+    color: colors.primaryContrast,
   },
-}));
+  entered: {
+    background: colors.primary,
+    color: colors.primaryContrast,
+  },
+};
 
 /**
  * Characteristic component
@@ -81,24 +97,12 @@ const Characteristic = ({
   values,
   resetHighlight,
 }) => {
-  const { classes, cx, theme } = useStyles();
   const {
     characteristicStates,
     setOpenState,
     allowMultipleOpen,
     productVariants,
   } = useProductCharacteristics();
-
-  const transition = {
-    entering: {
-      background: theme.palette.primary.main,
-      color: theme.palette.primary.contrastText,
-    },
-    entered: {
-      background: theme.palette.primary.main,
-      color: theme.palette.primary.contrastText,
-    },
-  };
 
   // Determine the states for the current characteristic
   const { isOpen, isLast } = useMemo(
@@ -155,22 +159,24 @@ const Characteristic = ({
     <Transition in={highlight} timeout={500} onEntered={resetHighlight}>
       { state => (
         <div
-          className={cx(classes.root, 'pdp-variant-accordion__characteristic', { disabled })}
+          className={
+          classNames(styles.root, 'pdp-variant-accordion__characteristic', {
+            disabled,
+          })}
           ref={charRef}
           style={transition[state]}
         >
           <div
-            className={cx(
-              classes.container,
-              'pdp-variant-accordion__characteristic__header',
-              {
-                [classes.containerLast]: isLast,
-                [classes.disabled]: disabled,
+            className={classNames(
+              styles.container,
+              'pdp-variant-accordion__characteristic__header', {
+                [styles.containerLast]: isLast,
+                [styles.disabled]: disabled,
               }
             )}
           >
             <div
-              className={classes.characteristic}
+              className={styles.characteristic}
               onClick={handleClick}
               onKeyDown={() => {}}
               role="button"
@@ -178,10 +184,10 @@ const Characteristic = ({
               aria-disabled={disabled}
               tabIndex="-1"
             >
-              <div className={classes.label}>
+              <div className={styles.label}>
                 {label}
               </div>
-              <div className={classes.value}>
+              <div className={styles.value}>
                 { selectedValue ? (
                   <CharacteristicValue
                     characteristicId={id}

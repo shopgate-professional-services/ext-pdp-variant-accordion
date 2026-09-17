@@ -1,8 +1,12 @@
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@shopgate/engage/styles';
+import { css } from 'glamor';
+import classNames from 'classnames';
+import { themeConfig } from '@shopgate/pwa-common/helpers/config';
 import CharacteristicValue from '../CharacteristicValue';
-import config from '../../../../../../config.json';
+import config from '../../../../../../config';
+
+const { colors } = themeConfig;
 
 const {
   horizontalInsets,
@@ -15,22 +19,22 @@ const insets = horizontalInsets || 0;
 const scrollOffset = 16;
 const animationDuration = animate ? 250 : 0;
 
-const useStyles = makeStyles()(theme => ({
-  root: {
+const styles = {
+  root: css({
     ...(animate ? {
       transition: `max-height ${animationDuration}ms cubic-bezier(0, 1, 0, 1)`,
     } : null),
     maxHeight: 0,
     overflow: 'hidden',
     margin: `0 -${insets}px 0 -${insets}px`,
-  },
-  open: {
+  }).toString(),
+  open: css({
     maxHeight: '100vh !important',
     ...(animate ? {
       transition: `max-height ${animationDuration * 2}ms ease-in-out !important`,
     } : null),
-  },
-  container: {
+  }).toString(),
+  container: css({
     display: 'flex',
     justifyContent: 'space-between',
     overflowScrolling: 'touch',
@@ -38,17 +42,17 @@ const useStyles = makeStyles()(theme => ({
     overflow: 'auto',
     paddingTop: 8,
     paddingBottom: 16,
-  },
-  valuesContainer: {
+  }),
+  valuesContainer: css({
     display: 'flex',
     flex: 1,
-  },
-  value: {
+  }),
+  value: css({
     whiteSpace: 'nowrap',
     margin: '0 6px',
-  },
-  terminator: {
-    background: theme.palette.secondary.main,
+  }).toString(),
+  terminator: css({
+    background: colors.accent,
     borderTopRightRadius: 8,
     borderBottomRightRadius: 8,
     borderTopLeftRadius: 4,
@@ -56,13 +60,13 @@ const useStyles = makeStyles()(theme => ({
     width: 4,
     marginRight: 4,
     marginLeft: 0,
-  },
-  terminatorEnd: {
+  }).toString(),
+  terminatorEnd: css({
     transform: 'rotate(180deg)',
     marginLeft: 4,
     marginRight: 0,
-  },
-}));
+  }).toString(),
+};
 
 /**
  * Characteristic component
@@ -76,7 +80,6 @@ const CharacteristicValues = ({
   characteristicId,
   characteristicLabel,
 }) => {
-  const { classes, cx } = useStyles();
   const containerRef = useRef(null);
 
   useEffect(() => {
@@ -123,14 +126,14 @@ const CharacteristicValues = ({
 
   return (
     <div
-      className={cx(classes.root, 'pdp-variant-accordion__characteristic__values', {
-        [classes.open]: open,
+      className={classNames(styles.root, 'pdp-variant-accordion__characteristic__values', {
+        [styles.open]: open,
       })}
       aria-hidden={!open}
     >
-      <div className={classes.container} ref={containerRef}>
-        <div className={classes.terminator}>&nbsp;</div>
-        <div className={classes.valuesContainer}>
+      <div className={styles.container} ref={containerRef}>
+        <div className={classNames(styles.terminator)}>&nbsp;</div>
+        <div className={styles.valuesContainer}>
           { sortedValues.map(value => (
             <CharacteristicValue
               key={value.id}
@@ -138,11 +141,11 @@ const CharacteristicValues = ({
               characteristicLabel={characteristicLabel}
               value={value}
               onClick={onClick}
-              className={classes.value}
+              className={styles.value}
             />
           ))}
         </div>
-        <div className={cx(classes.terminator, classes.terminatorEnd)}>&nbsp;</div>
+        <div className={classNames(styles.terminator, styles.terminatorEnd)}>&nbsp;</div>
       </div>
     </div>
   );
@@ -161,3 +164,4 @@ CharacteristicValues.defaultProps = {
 };
 
 export default CharacteristicValues;
+
