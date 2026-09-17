@@ -1,15 +1,9 @@
-import React, {
-  Fragment, memo, useMemo, useCallback,
-} from 'react';
+import React, { memo, useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { Price, PriceStriked, HtmlSanitizer } from '@shopgate/engage/components';
-import { css } from 'glamor';
-import { themeConfig } from '@shopgate/pwa-common/helpers/config';
+import { makeStyles } from '@shopgate/engage/styles';
 import { useProductCharacteristics } from '../../../../hooks';
-import config from '../../../../../../config';
-
-const { colors } = themeConfig;
+import config from '../../../../../../config.json';
 
 const {
   characteristicValueBorderColor,
@@ -22,81 +16,78 @@ const {
   imageSwatchBackgroundSize,
 } = config;
 
-const borderColor = characteristicValueBorderColor || '#DCDCDC';
-const borderColorSelected = characteristicValueBorderColorSelected || colors.accent;
-
-const styles = {
-  root: css({
-    border: `1px solid ${borderColor}`,
-    borderRadius: 4,
+const useStyles = makeStyles()(theme => ({
+  root: {
+    border: `1px solid ${characteristicValueBorderColor || theme.components.border.medium}`,
+    borderRadius: theme.shape.borderRadius,
     padding: 8,
     display: 'flex',
     minWidth: 70,
     justifyContent: 'center',
-  }).toString(),
-  selected: css({
-    borderColor: `${borderColorSelected} !important`,
+  },
+  selected: {
+    borderColor: `${characteristicValueBorderColorSelected || theme.palette.secondary.main} !important`,
     borderWidth: '2px !important',
-  }).toString(),
-  disabled: css({
-    color: colors.shade4,
+  },
+  disabled: {
+    color: theme.palette.text.disabled,
     cursor: 'default',
     ' > span': {
       opacity: 0.4,
     },
-  }).toString(),
-  swatchContainer: css({
+  },
+  swatchContainer: {
     display: 'block',
     justifyContent: 'center',
     textAlign: 'center',
     minWidth: '80px',
-  }).toString(),
-  swatch: css({
+  },
+  swatch: {
     width: '100%',
     borderRadius: 3,
-  }).toString(),
-  container: css({
+  },
+  container: {
     display: 'block',
     textAlign: 'center',
-  }).toString(),
-  priceContainer: css({
+  },
+  priceContainer: {
     display: 'block',
     position: 'relative',
-  }).toString(),
-  priceStriked: css({
+  },
+  priceStriked: {
     fontSize: '1.25rem',
-  }).toString(),
-  price: css({
+  },
+  price: {
     display: 'inline-block',
-    color: colors.primary,
+    color: theme.palette.primary.main,
     fontSize: '1.5rem',
     fontWeight: 600,
-  }).toString(),
-  asterix: css({
+  },
+  asterix: {
     fontSize: '1.5rem',
     fontWeight: 300,
-  }),
-  swatchAsCircle: css({
+  },
+  swatchAsCircle: {
     width: '100%',
     height: '100%',
     borderRadius: 50,
-  }).toString(),
-  buttonAsCircle: css({
+  },
+  buttonAsCircle: {
     width: '70px',
     height: '70px',
     borderRadius: '50px',
     margin: 'auto',
-  }).toString(),
-  imageOverlayLabel: css({
+  },
+  imageOverlayLabel: {
     fontSize: '12px',
     lineHeight: `${imageSwatchSize}px`,
     color: imageOverlayLabelColor || '#fff',
-  }).toString(),
-  labelBelowSwatch: css({
+  },
+  labelBelowSwatch: {
     marginTop: '4px',
     fontSize: '0.6rem',
-  }).toString(),
-};
+  },
+}));
 
 /**
  * CharacteristicValue
@@ -107,6 +98,7 @@ const styles = {
 const CharacteristicValue = ({
   value, className, onClick, characteristicId, characteristicLabel,
 }) => {
+  const { classes, cx } = useStyles();
   const {
     id, label, selected, selectable, price,
   } = value;
@@ -151,18 +143,18 @@ const CharacteristicValue = ({
     label: characteristicLabel,
   }, value), [value, characteristicId, characteristicLabel, getSwatchImage]);
 
-  const classes = useMemo(() => classNames(
-    styles.root,
+  const valueClassName = useMemo(() => cx(
+    classes.root,
     className,
     'pdp-variant-accordion__characteristic__value',
-    showSwatchAsCircle && isColorCharacteristicLabel ? styles.buttonAsCircle : null,
+    showSwatchAsCircle && isColorCharacteristicLabel ? classes.buttonAsCircle : null,
     {
-      [styles.selected]: clickable && selected,
-      [styles.disabled]: !selectable,
+      [classes.selected]: clickable && selected,
+      [classes.disabled]: !selectable,
       selected: clickable && selected,
       disabled: !selectable,
     }
-  ), [className, selectable, selected, clickable, isColorCharacteristicLabel]);
+  ), [className, selectable, selected, clickable, isColorCharacteristicLabel, classes, cx]);
 
   const handleClick = useCallback(() => {
     if (selectable && onClick) {
@@ -186,72 +178,64 @@ const CharacteristicValue = ({
   }, [onClick, selectable, selected, handleClick]);
 
   return (
-    <div className={styles.swatchContainer}>
-      <Component className={classes}>
+    <div className={classes.swatchContainer}>
+      <Component className={valueClassName}>
         { swatchColor || swatchImage ? (
-          <>
-            <span
-              className={
-                showSwatchAsCircle &&
-                isColorCharacteristicLabel ? styles.swatchAsCircle : styles.swatch
-              }
-              style={{
-                background: swatchColor,
-                backgroundImage: `url(${swatchImage ? swatchImage.imageUrl : ''})`,
-                backgroundSize: imageSwatchBackgroundSize,
-                width: `${imageSwatchSize}px`,
-                height: `${imageSwatchSize}px`,
-              }}
-            >
-              { swatchImage && swatchImage.imageOverlayLabel ? (
-                <span className={styles.imageOverlayLabel}>{swatchImage ? swatchImage.imageOverlayLabel : ''}</span>
-              ) : null}
-            </span>
-          </>
+          <span
+            className={
+              showSwatchAsCircle &&
+              isColorCharacteristicLabel ? classes.swatchAsCircle : classes.swatch
+            }
+            style={{
+              background: swatchColor,
+              backgroundImage: `url(${swatchImage ? swatchImage.imageUrl : ''})`,
+              backgroundSize: imageSwatchBackgroundSize,
+              width: `${imageSwatchSize}px`,
+              height: `${imageSwatchSize}px`,
+            }}
+          >
+            { swatchImage && swatchImage.imageOverlayLabel ? (
+              <span className={classes.imageOverlayLabel}>{swatchImage ? swatchImage.imageOverlayLabel : ''}</span>
+            ) : null}
+          </span>
         ) : (
-          <Fragment>
-            <div className={styles.container}>
+          <div className={classes.container}>
+            <span>
+              {label}
+            </span>
+            <div className={classes.priceContainer}>
+              {priceStriked ? (
+                <PriceStriked
+                  value={priceStriked}
+                  currency={currency}
+                  className={classes.priceStriked}
+                />
+              ) : null}
+              {currency ? (
+                <>
+                  <Price
+                    unitPrice={unitPrice}
+                    currency={currency}
+                    className={classes.price}
+                  />
+                  <span className={classes.asterix}>
+                    *
+                  </span>
+                </>
+              ) : null}
               <span>
-                {label}
+                { basePrice ? (
+                  <HtmlSanitizer>
+                    {basePrice}
+                  </HtmlSanitizer>
+                ) : null}
               </span>
-              <div className={styles.priceContainer}>
-                {priceStriked ? (
-                  <>
-                    <PriceStriked
-                      value={priceStriked}
-                      currency={currency}
-                      className={styles.priceStriked}
-                    />
-                  </>
-                ) : null}
-                {currency ? (
-                  <>
-                    <Price
-                      unitPrice={unitPrice}
-                      currency={currency}
-                      className={styles.price}
-                    />
-                    <span className={styles.asterix}>
-                      {'*'}
-                    </span>
-                  </>
-                ) : null}
-                <span className={styles.basePrice}>
-                  { basePrice ? (
-                    <>
-                      <HtmlSanitizer>
-                        {basePrice}
-                      </HtmlSanitizer>
-                    </>
-                  ) : null}
-                </span>
-              </div>
             </div>
-          </Fragment>
+          </div>
         )}
       </Component>
       { showLabelBelowSwatch && isColorCharacteristicLabel ? (
-        <p className={styles.labelBelowSwatch}>
+        <p className={classes.labelBelowSwatch}>
           {label}
         </p>
       ) : null}
