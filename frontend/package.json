@@ -4,16 +4,18 @@
   "description": "Extension will replace the default variant selection on PDP with an accordion style version.",
   "license": "Apache-2.0",
   "scripts": {
-    "lint": "eslint --parser babel-eslint --ignore-path ../.gitignore --ignore-path .eslintignore --ext .js --ext .jsx .",
-    "dummy": ""
+    "lint": "eslint --ignore-path ../.gitignore --ext .js --ext .jsx ."
   },
   "devDependencies": {
-    "@shopgate/eslint-config": "^6.18.7-beta.3",
-    "@shopgate/pwa-common": "^6.18.7-beta.3",
-    "@shopgate/engage": "^6.18.7-beta.3",
-    "eslint": "^5.12.0",
-    "glamor": "^2.20.40",
-    "prop-types": "^15.6.0",
-    "react": "~16.8.4"
+    "@shopgate/engage": ">=7.32.0-beta.19",
+    "@shopgate/eslint-config": "^7.31.8",
+    "eslint": "^8.57.1",
+    "prop-types": "^15.6.0"
+  },
+  "peerDependencies": {
+    "@shopgate/engage": ">=7.32.0-beta.19"
+  },
+  "dependencies": {
+    "react-transition-group": "^4.4.5"
   }
 }
