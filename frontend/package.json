@@ -12,6 +12,9 @@
     "eslint": "^8.57.1",
     "prop-types": "^15.6.0"
   },
+  "peerDependencies": {
+    "@shopgate/engage": ">=7.32.0-beta.19"
+  },
   "dependencies": {
     "react-transition-group": "^4.4.5"
   }
