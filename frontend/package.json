@@ -7,11 +7,10 @@
     "lint": "eslint --ignore-path ../.gitignore --ext .js --ext .jsx ."
   },
   "devDependencies": {
+    "@shopgate/engage": ">=7.32.0-beta.19",
     "@shopgate/eslint-config": "^7.31.8",
-    "eslint": "^8.57.1"
-  },
-  "peerDependencies": {
-    "@shopgate/engage": "7.32.0-beta.19"
+    "eslint": "^8.57.1",
+    "prop-types": "^15.6.0"
   },
   "dependencies": {
     "react-transition-group": "^4.4.5"
