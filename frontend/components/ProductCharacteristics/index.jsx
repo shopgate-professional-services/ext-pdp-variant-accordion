@@ -1,4 +1,6 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, {
+  useCallback, useState, useEffect, useMemo,
+} from 'react';
 import {
   ProductCharacteristics as EngageProductCharacteristics,
 } from '@shopgate/engage/product';
@@ -52,6 +54,21 @@ const ProductCharacteristics = () => {
     []
   );
 
+  /**
+   * The characteristics element is memoized to keep its identity stable. Otherwise it would
+   * re-render whenever the provider context updates, e.g. when a characteristic is opened.
+   */
+  const characteristics = useMemo(() => (
+    <EngageProductCharacteristics
+      productId={productId}
+      variantId={variantId}
+      conditioner={conditioner}
+      setCharacteristics={setCharacteristics}
+      finishTimeout={200}
+      render={renderCharacteristic}
+    />
+  ), [conditioner, productId, renderCharacteristic, setCharacteristics, variantId]);
+
   return (
     <div className={cx(classes.root, 'pdp-variant-accordion')}>
       <ProductCharacteristicsProvider productId={productId} variantId={variantId}>
@@ -62,14 +79,7 @@ const ProductCharacteristics = () => {
               lines={placeholderLines}
               className={classes.placeholder}
             >
-              <EngageProductCharacteristics
-                productId={productId}
-                variantId={variantId}
-                conditioner={conditioner}
-                setCharacteristics={setCharacteristics}
-                finishTimeout={200}
-                render={renderCharacteristic}
-              />
+              {characteristics}
             </PlaceholderParagraph>
           )}
         </Context.Consumer>

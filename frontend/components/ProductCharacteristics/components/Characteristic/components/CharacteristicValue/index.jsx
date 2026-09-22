@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Price, PriceStriked, HtmlSanitizer } from '@shopgate/engage/components';
 import { makeStyles } from '@shopgate/engage/styles';
 import { useProductCharacteristics } from '../../../../hooks';
+import { isColorCharacteristicLabel as isColorCharacteristic } from '../../../../../../helpers';
 import config from '../../../../../../config.json';
 
 const {
@@ -10,7 +11,6 @@ const {
   characteristicValueBorderColorSelected,
   showSwatchAsCircle,
   showLabelBelowSwatch,
-  colorCharacteristic,
   imageOverlayLabelColor,
   imageSwatchSize,
   imageSwatchBackgroundSize,
@@ -26,8 +26,8 @@ const useStyles = makeStyles()(theme => ({
     justifyContent: 'center',
   },
   selected: {
-    borderColor: `${characteristicValueBorderColorSelected || theme.palette.secondary.main} !important`,
-    borderWidth: '2px !important',
+    borderColor: `${characteristicValueBorderColorSelected || theme.palette.secondary.main}`,
+    borderWidth: 2,
   },
   disabled: {
     color: theme.palette.text.disabled,
@@ -63,7 +63,7 @@ const useStyles = makeStyles()(theme => ({
     fontSize: '1.5rem',
     fontWeight: 600,
   },
-  asterix: {
+  asterisk: {
     fontSize: '1.5rem',
     fontWeight: 300,
   },
@@ -73,9 +73,9 @@ const useStyles = makeStyles()(theme => ({
     borderRadius: 50,
   },
   buttonAsCircle: {
-    width: '70px',
-    height: '70px',
-    borderRadius: '50px',
+    width: 70,
+    height: 70,
+    borderRadius: 50,
     margin: 'auto',
   },
   imageOverlayLabel: {
@@ -84,7 +84,7 @@ const useStyles = makeStyles()(theme => ({
     color: imageOverlayLabelColor || '#fff',
   },
   labelBelowSwatch: {
-    marginTop: '4px',
+    marginTop: 4,
     fontSize: '0.6rem',
   },
 }));
@@ -127,8 +127,8 @@ const CharacteristicValue = ({
   const clickable = useMemo(() => typeof onClick === 'function', [onClick]);
 
   const isColorCharacteristicLabel = useMemo(
-    () => Array.isArray(colorCharacteristic) &&
-    colorCharacteristic.includes(characteristicLabel), [characteristicLabel]
+    () => isColorCharacteristic(characteristicLabel),
+    [characteristicLabel]
   );
 
   // Determine if the value needs to be displayed as a swatch
@@ -143,18 +143,24 @@ const CharacteristicValue = ({
     label: characteristicLabel,
   }, value), [value, characteristicId, characteristicLabel, getSwatchImage]);
 
+  // Determine if the value needs to be displayed as a circle
+  const asCircle = useMemo(
+    () => showSwatchAsCircle && isColorCharacteristicLabel,
+    [isColorCharacteristicLabel]
+  );
+
   const valueClassName = useMemo(() => cx(
     classes.root,
     className,
     'pdp-variant-accordion__characteristic__value',
-    showSwatchAsCircle && isColorCharacteristicLabel ? classes.buttonAsCircle : null,
     {
+      [classes.buttonAsCircle]: asCircle,
       [classes.selected]: clickable && selected,
       [classes.disabled]: !selectable,
       selected: clickable && selected,
       disabled: !selectable,
     }
-  ), [className, selectable, selected, clickable, isColorCharacteristicLabel, classes, cx]);
+  ), [className, selectable, selected, clickable, asCircle, classes, cx]);
 
   const handleClick = useCallback(() => {
     if (selectable && onClick) {
@@ -162,78 +168,77 @@ const CharacteristicValue = ({
     }
   }, [selectable, id, onClick]);
 
-  const Component = useCallback((props) => {
-    if (onClick) {
-      return (<button
-        type="button"
-        aria-disabled={!selectable}
-        aria-pressed={selected}
-        onClick={handleClick}
-        disabled={!selectable}
-        {...props}
-      />);
-    }
+  const swatchStyle = useMemo(() => ({
+    background: swatchColor,
+    ...(swatchImage && { backgroundImage: `url(${swatchImage.imageUrl})` }),
+    backgroundSize: imageSwatchBackgroundSize,
+    width: `${imageSwatchSize}px`,
+    height: `${imageSwatchSize}px`,
+  }), [swatchColor, swatchImage]);
 
-    return (<div {...props} />);
-  }, [onClick, selectable, selected, handleClick]);
+  const content = swatchColor || swatchImage ? (
+    <span
+      className={asCircle ? classes.swatchAsCircle : classes.swatch}
+      style={swatchStyle}
+    >
+      { swatchImage && swatchImage.imageOverlayLabel ? (
+        <span className={classes.imageOverlayLabel}>{swatchImage.imageOverlayLabel}</span>
+      ) : null}
+    </span>
+  ) : (
+    <div className={classes.container}>
+      <span>
+        {label}
+      </span>
+      <div className={classes.priceContainer}>
+        {priceStriked ? (
+          <PriceStriked
+            value={priceStriked}
+            currency={currency}
+            className={classes.priceStriked}
+          />
+        ) : null}
+        {currency ? (
+          <>
+            <Price
+              unitPrice={unitPrice}
+              currency={currency}
+              className={classes.price}
+            />
+            <span className={classes.asterisk}>
+              *
+            </span>
+          </>
+        ) : null}
+        <span>
+          { basePrice ? (
+            <HtmlSanitizer>
+              {basePrice}
+            </HtmlSanitizer>
+          ) : null}
+        </span>
+      </div>
+    </div>
+  );
 
   return (
     <div className={classes.swatchContainer}>
-      <Component className={valueClassName}>
-        { swatchColor || swatchImage ? (
-          <span
-            className={
-              showSwatchAsCircle &&
-              isColorCharacteristicLabel ? classes.swatchAsCircle : classes.swatch
-            }
-            style={{
-              background: swatchColor,
-              backgroundImage: `url(${swatchImage ? swatchImage.imageUrl : ''})`,
-              backgroundSize: imageSwatchBackgroundSize,
-              width: `${imageSwatchSize}px`,
-              height: `${imageSwatchSize}px`,
-            }}
-          >
-            { swatchImage && swatchImage.imageOverlayLabel ? (
-              <span className={classes.imageOverlayLabel}>{swatchImage ? swatchImage.imageOverlayLabel : ''}</span>
-            ) : null}
-          </span>
-        ) : (
-          <div className={classes.container}>
-            <span>
-              {label}
-            </span>
-            <div className={classes.priceContainer}>
-              {priceStriked ? (
-                <PriceStriked
-                  value={priceStriked}
-                  currency={currency}
-                  className={classes.priceStriked}
-                />
-              ) : null}
-              {currency ? (
-                <>
-                  <Price
-                    unitPrice={unitPrice}
-                    currency={currency}
-                    className={classes.price}
-                  />
-                  <span className={classes.asterix}>
-                    *
-                  </span>
-                </>
-              ) : null}
-              <span>
-                { basePrice ? (
-                  <HtmlSanitizer>
-                    {basePrice}
-                  </HtmlSanitizer>
-                ) : null}
-              </span>
-            </div>
-          </div>
-        )}
-      </Component>
+      { onClick ? (
+        <button
+          type="button"
+          className={valueClassName}
+          aria-disabled={!selectable}
+          aria-pressed={selected}
+          onClick={handleClick}
+          disabled={!selectable}
+        >
+          {content}
+        </button>
+      ) : (
+        <div className={valueClassName}>
+          {content}
+        </div>
+      )}
       { showLabelBelowSwatch && isColorCharacteristicLabel ? (
         <p className={classes.labelBelowSwatch}>
           {label}

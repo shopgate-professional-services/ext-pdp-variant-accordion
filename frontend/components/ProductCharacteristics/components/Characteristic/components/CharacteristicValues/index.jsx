@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@shopgate/engage/styles';
 import CharacteristicValue from '../CharacteristicValue';
@@ -14,6 +14,12 @@ const insets = horizontalInsets || 0;
 
 const scrollOffset = 16;
 const animationDuration = animate ? 250 : 0;
+
+// Labels in the order the characteristic values are supposed to be sorted
+const sortColorImageCharacteristicArray = (sortColorImageCharacteristic || '')
+  .split(',')
+  .map(sortChar => sortChar.trim())
+  .filter(sortChar => !!sortChar);
 
 const useStyles = makeStyles()(theme => ({
   root: {
@@ -106,12 +112,7 @@ const CharacteristicValues = ({
     return valueIndex < 0 ? sortValuesArray.length : valueIndex;
   };
 
-  const sortColorImageCharacteristicArray = sortColorImageCharacteristic
-    .split(',')
-    .filter(sortChar => !!sortChar)
-    .map(sortChar => sortChar.trim());
-
-  const sortedValues = values
+  const sortedValues = useMemo(() => values
     .filter((value) => {
       const { label } = value || {};
       return !!label;
@@ -119,7 +120,7 @@ const CharacteristicValues = ({
     .sort((valueA, valueB) => (
       // eslint-disable-next-line max-len
       valueToIndex(valueA, sortColorImageCharacteristicArray) - valueToIndex(valueB, sortColorImageCharacteristicArray)
-    ));
+    )), [values]);
 
   return (
     <div

@@ -89,7 +89,7 @@ const Characteristic = ({
     productVariants,
   } = useProductCharacteristics();
 
-  const transition = {
+  const transition = useMemo(() => ({
     entering: {
       background: theme.palette.primary.main,
       color: theme.palette.primary.contrastText,
@@ -98,7 +98,7 @@ const Characteristic = ({
       background: theme.palette.primary.main,
       color: theme.palette.primary.contrastText,
     },
-  };
+  }), [theme]);
 
   // Determine the states for the current characteristic
   const { isOpen, isLast } = useMemo(
