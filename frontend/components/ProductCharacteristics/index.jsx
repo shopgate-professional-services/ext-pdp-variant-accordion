@@ -16,7 +16,7 @@ const { bottomInset = 0, placeholderLines = 3 } = config;
 const useStyles = makeStyles()(() => ({
   root: {
     marginBottom: bottomInset,
-    ':empty': {
+    '&:empty': {
       display: 'none',
     },
     '& .ui-shared__placeholder-paragraph': {

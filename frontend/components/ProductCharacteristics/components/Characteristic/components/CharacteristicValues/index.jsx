@@ -71,6 +71,24 @@ const useStyles = makeStyles()(theme => ({
 }));
 
 /**
+ * Get an sort number from value label and sortValues
+ * @param {Object} value Product values object
+ * @param {Array} sortValuesArray Array of labels in the order they should be sorted
+ * @return {number}
+ */
+const valueToIndex = (value, sortValuesArray) => {
+  const { label } = value || {};
+
+  if (!label) {
+    return sortValuesArray.length;
+  }
+
+  const valueIndex = sortValuesArray.indexOf(label);
+
+  return valueIndex < 0 ? sortValuesArray.length : valueIndex;
+};
+
+/**
  * Characteristic component
  * @param {Object} props The component props
  * @returns {JSX}
@@ -93,24 +111,6 @@ const CharacteristicValues = ({
       containerRef.current.scrollTo({ left: selected.offsetLeft - scrollOffset });
     }, animationDuration * 2);
   }, [open, values]);
-
-  /**
-   * Get an sort number from value label and sortValues
-   * @param {Object} value Product values object
-   * @param {Array} sortValuesArray Array of labels in the order they should be sorted
-   * @return {number}
-  */
-  const valueToIndex = (value, sortValuesArray) => {
-    const { label } = value || {};
-
-    if (!label) {
-      return sortValuesArray.length;
-    }
-
-    const valueIndex = sortValuesArray.indexOf(label);
-
-    return valueIndex < 0 ? sortValuesArray.length : valueIndex;
-  };
 
   const sortedValues = useMemo(() => values
     .filter((value) => {
