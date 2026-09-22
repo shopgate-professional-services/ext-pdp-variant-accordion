@@ -1,12 +1,8 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { css } from 'glamor';
-import classNames from 'classnames';
-import { themeConfig } from '@shopgate/pwa-common/helpers/config';
+import { makeStyles } from '@shopgate/engage/styles';
 import CharacteristicValue from '../CharacteristicValue';
-import config from '../../../../../../config';
-
-const { colors } = themeConfig;
+import config from '../../../../../../config.json';
 
 const {
   horizontalInsets,
@@ -19,22 +15,28 @@ const insets = horizontalInsets || 0;
 const scrollOffset = 16;
 const animationDuration = animate ? 250 : 0;
 
-const styles = {
-  root: css({
+// Labels in the order the characteristic values are supposed to be sorted
+const sortColorImageCharacteristicArray = (sortColorImageCharacteristic || '')
+  .split(',')
+  .map(sortChar => sortChar.trim())
+  .filter(sortChar => !!sortChar);
+
+const useStyles = makeStyles()(theme => ({
+  root: {
     ...(animate ? {
       transition: `max-height ${animationDuration}ms cubic-bezier(0, 1, 0, 1)`,
     } : null),
     maxHeight: 0,
     overflow: 'hidden',
     margin: `0 -${insets}px 0 -${insets}px`,
-  }).toString(),
-  open: css({
+  },
+  open: {
     maxHeight: '100vh !important',
     ...(animate ? {
       transition: `max-height ${animationDuration * 2}ms ease-in-out !important`,
     } : null),
-  }).toString(),
-  container: css({
+  },
+  container: {
     display: 'flex',
     justifyContent: 'space-between',
     overflowScrolling: 'touch',
@@ -42,17 +44,17 @@ const styles = {
     overflow: 'auto',
     paddingTop: 8,
     paddingBottom: 16,
-  }),
-  valuesContainer: css({
+  },
+  valuesContainer: {
     display: 'flex',
     flex: 1,
-  }),
-  value: css({
+  },
+  value: {
     whiteSpace: 'nowrap',
     margin: '0 6px',
-  }).toString(),
-  terminator: css({
-    background: colors.accent,
+  },
+  terminator: {
+    background: theme.palette.secondary.main,
     borderTopRightRadius: 8,
     borderBottomRightRadius: 8,
     borderTopLeftRadius: 4,
@@ -60,12 +62,30 @@ const styles = {
     width: 4,
     marginRight: 4,
     marginLeft: 0,
-  }).toString(),
-  terminatorEnd: css({
+  },
+  terminatorEnd: {
     transform: 'rotate(180deg)',
     marginLeft: 4,
     marginRight: 0,
-  }).toString(),
+  },
+}));
+
+/**
+ * Get an sort number from value label and sortValues
+ * @param {Object} value Product values object
+ * @param {Array} sortValuesArray Array of labels in the order they should be sorted
+ * @return {number}
+ */
+const valueToIndex = (value, sortValuesArray) => {
+  const { label } = value || {};
+
+  if (!label) {
+    return sortValuesArray.length;
+  }
+
+  const valueIndex = sortValuesArray.indexOf(label);
+
+  return valueIndex < 0 ? sortValuesArray.length : valueIndex;
 };
 
 /**
@@ -80,6 +100,7 @@ const CharacteristicValues = ({
   characteristicId,
   characteristicLabel,
 }) => {
+  const { classes, cx } = useStyles();
   const containerRef = useRef(null);
 
   useEffect(() => {
@@ -91,30 +112,7 @@ const CharacteristicValues = ({
     }, animationDuration * 2);
   }, [open, values]);
 
-  /**
-   * Get an sort number from value label and sortValues
-   * @param {Object} value Product values object
-   * @param {Array} sortValuesArray Array of labels in the order they should be sorted
-   * @return {number}
-  */
-  const valueToIndex = (value, sortValuesArray) => {
-    const { label } = value || {};
-
-    if (!label) {
-      return sortValuesArray.length;
-    }
-
-    const valueIndex = sortValuesArray.indexOf(label);
-
-    return valueIndex < 0 ? sortValuesArray.length : valueIndex;
-  };
-
-  const sortColorImageCharacteristicArray = sortColorImageCharacteristic
-    .split(',')
-    .filter(sortChar => !!sortChar)
-    .map(sortChar => sortChar.trim());
-
-  const sortedValues = values
+  const sortedValues = useMemo(() => values
     .filter((value) => {
       const { label } = value || {};
       return !!label;
@@ -122,18 +120,18 @@ const CharacteristicValues = ({
     .sort((valueA, valueB) => (
       // eslint-disable-next-line max-len
       valueToIndex(valueA, sortColorImageCharacteristicArray) - valueToIndex(valueB, sortColorImageCharacteristicArray)
-    ));
+    )), [values]);
 
   return (
     <div
-      className={classNames(styles.root, 'pdp-variant-accordion__characteristic__values', {
-        [styles.open]: open,
+      className={cx(classes.root, 'pdp-variant-accordion__characteristic__values', {
+        [classes.open]: open,
       })}
       aria-hidden={!open}
     >
-      <div className={styles.container} ref={containerRef}>
-        <div className={classNames(styles.terminator)}>&nbsp;</div>
-        <div className={styles.valuesContainer}>
+      <div className={classes.container} ref={containerRef}>
+        <div className={classes.terminator}>&nbsp;</div>
+        <div className={classes.valuesContainer}>
           { sortedValues.map(value => (
             <CharacteristicValue
               key={value.id}
@@ -141,11 +139,11 @@ const CharacteristicValues = ({
               characteristicLabel={characteristicLabel}
               value={value}
               onClick={onClick}
-              className={styles.value}
+              className={classes.value}
             />
           ))}
         </div>
-        <div className={classNames(styles.terminator, styles.terminatorEnd)}>&nbsp;</div>
+        <div className={cx(classes.terminator, classes.terminatorEnd)}>&nbsp;</div>
       </div>
     </div>
   );
@@ -164,4 +162,3 @@ CharacteristicValues.defaultProps = {
 };
 
 export default CharacteristicValues;
-
