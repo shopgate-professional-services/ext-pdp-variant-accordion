@@ -63,6 +63,5 @@ typings/
 .DS_Store
 
 
-package-lock.json
 frontend/config.json
 extension/config.json
