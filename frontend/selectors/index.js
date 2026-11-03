@@ -1,23 +1,24 @@
 import { createSelector } from 'reselect';
 import { getProductVariants } from '@shopgate/engage/product';
-import { isDev } from '@shopgate/engage/core';
-import {
-  colorCharacteristic,
+import config from '../config.json';
+import { isColorCharacteristicLabel } from '../helpers';
+import { IMAGE_OVERLAY_LABEL, IMAGE_URL, SWATCH_IMAGE_PREFIX } from '../constants';
+
+const {
   propertyWithColor,
   useImageAsSwatch,
   characteristicValueImageMapping,
-} from '../config';
-import { IMAGE_OVERLAY_LABEL, IMAGE_URL, SWATCH_IMAGE_PREFIX } from '../constants';
+} = config;
 
 export const getColorCharacteristic = createSelector(
   getProductVariants,
   (variants) => {
-    if (!variants || !Array.isArray(colorCharacteristic) || !propertyWithColor) {
+    if (!variants || !propertyWithColor) {
       return null;
     }
 
     const characteristic = variants.characteristics.find(char => (
-      colorCharacteristic.includes(char.label)
+      isColorCharacteristicLabel(char.label)
     ));
 
     if (!characteristic) {
@@ -34,16 +35,8 @@ export const getColorCharacteristic = createSelector(
       if (additionalProperties) {
         property = additionalProperties.find(p => p.label === propertyWithColor);
 
-        if (isDev) {
-          const needles = [];
-          const colors = [];
-
-          if (needles.includes(property.value)) {
-            property.value = colors[needles.findIndex(entry => entry === property.value)];
-          }
-        }
-
-        if (!/(?:#|0x)(?:[a-f0-9]{3}|[a-f0-9]{6})\b|(?:rgb|hsl)a?\([^)]*\)/i.test(property.value)) {
+        if (!property?.value ||
+          !/(?:#|0x)(?:[a-f0-9]{3}|[a-f0-9]{6})\b|(?:rgb|hsl)a?\([^)]*\)/i.test(property.value)) {
           property = null;
         }
       }
@@ -64,12 +57,12 @@ export const getColorCharacteristic = createSelector(
 export const getColorImageCharacteristic = createSelector(
   getProductVariants,
   (variants) => {
-    if (!variants || !Array.isArray(colorCharacteristic) || !useImageAsSwatch) {
+    if (!variants || !useImageAsSwatch) {
       return null;
     }
 
     const characteristic = variants.characteristics.find(char => (
-      colorCharacteristic.includes(char.label)
+      isColorCharacteristicLabel(char.label)
     ));
 
     if (!characteristic) {
